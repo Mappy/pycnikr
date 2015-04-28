@@ -1,3 +1,9 @@
+"""
+This file is a python stylesheet which describes layers and styles for Mapnik.
+Describe layers and styles by this way is simple and easy-readable
+It is not usable by Mapnik directly, you have to translate it with Pycnik, if
+you want to try execute pycnik_sample.py
+"""
 from pycnik.model import *
 
 # Standard zoom level
@@ -15,20 +21,15 @@ Map.buffer_size = 128
 countries = Layer('countries')
 countries.datasource = {
     'type': 'shape',
-    'file': 'data/ne_110m_admin_0_countries.shp',
+    'file': './data/ne_110m_admin_0_countries_merc.shp',
 }
 
-countries.style()[1] = {
+zoom_style = {
      POLYGON: {
         'fill': 'rgb(195,211,188)'
     },
 }
 
-for zoom_level in (2,19):
-    countries.style()[zoom_level] = countries.style()[1]
-
-
-
-
-
-
+# Assign th same style for all zoom levels
+for zoom in xrange(20):
+    countries.style('countries')[zoom] = zoom_style

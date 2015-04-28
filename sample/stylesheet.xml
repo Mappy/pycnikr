@@ -1,16 +1,15 @@
 <?xml version='1.0' encoding='utf-8'?>
 <Map buffer-size="128" background-color="rgb(70,130,180)" srs="+init=epsg:3857" minimum-version="2.0">
-  <Style name="countries_default">
+  <Style name="countries_countries">
     <Rule>
-      <MaxScaleDenominator>559082264</MaxScaleDenominator>
       <PolygonSymbolizer fill="rgb(195,211,188)"/>
     </Rule>
   </Style>
   <Layer name="countries">
-    <StyleName>countries_default</StyleName>
+    <StyleName>countries_countries</StyleName>
     <Datasource>
       <Parameter name="type">shape</Parameter>
-      <Parameter name="file">data/ne_110m_admin_0_countries.shp</Parameter>
+      <Parameter name="file">./data/ne_110m_admin_0_countries_merc.shp</Parameter>
     </Datasource>
   </Layer>
 </Map>
