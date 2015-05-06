@@ -12,16 +12,16 @@ below.
 ![Alt text](http://g.gravizo.com/g?
   digraph G {
 
-    geo_data_source [shape=note,
-     label="Geographical data source\n(Shape file, PostGIS, etc.)"];
+    aize ="4,4";
+
+    geo_data_source [shape=note, label="Geographical data source\n(Shape file, PostGIS, etc.)"];
     mapnik_templates [shape=note, label="Mapnik templates (XML)"];
     mapnik[label="Mapnik 2.1"];
     pycnik_lib[label="Pycnik library"];
     pycnik_scripts[label="Pycnik scripts"];
     tile_server[label="Tile server\n(mod_tile, TileCache, TileStache, etc.)"];
     django[label="Django"];
-    javascripts[shape=note,
-     label="Third-parties Javascript files\n(ace.js, leaflet.js)"];
+    javascripts[shape=note, label="Third-parties Javascript files\n(ace.js, leaflet.js)"];
     html[shape=note, label="Other static files\n(HTML, CSS, PNG, etc.)"];
     web_server[label="Web server\n(NginX, Apache, etc.)"];
     browser[label="Web browser\n(Chrome, Firefox, etc.)"];
@@ -63,11 +63,11 @@ Install first the Vagrant VM of
 
 Then, execute the following steps:
 
-    cd /srv/TileStache
-    python setup.py install
     pip uninstall PIL
     pip install Pillow
+    cd /srv/TileStache
     ./run_tests.sh
+    python setup.py install
 
 ## Install pycnik
 
@@ -87,8 +87,7 @@ The installation of **pycnik** must be completed with the following steps:
 
     pip install requests
     cd /srv/TileStache
-    git clone
-    https://github.com/Mappy/pycnikr.git
+    git clone https://github.com/Mappy/pycnikr.git
     cd pycnikr
     cd sample
     python sample_mapnik.py
