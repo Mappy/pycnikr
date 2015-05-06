@@ -11,9 +11,7 @@ below.
 
 ![Alt text](http://g.gravizo.com/g?
   digraph G {
-
     aize ="4,4";
-
     geo_data_source [shape=note, label="Geographical data source\n(Shape file, PostGIS, etc.)"];
     mapnik_templates [shape=note, label="Mapnik templates (XML)"];
     mapnik[label="Mapnik 2.1"];
@@ -25,7 +23,6 @@ below.
     html[shape=note, label="Other static files\n(HTML, CSS, PNG, etc.)"];
     web_server[label="Web server\n(NginX, Apache, etc.)"];
     browser[label="Web browser\n(Chrome, Firefox, etc.)"];
-
     mapnik -> geo_data_source;
     mapnik -> mapnik_templates;
     pycnik_lib -> mapnik_templates;
@@ -38,7 +35,6 @@ below.
     browser -> web_server;
     browser -> tile_server;
     tile_server -> mapnik;
-
   }
 )
 
