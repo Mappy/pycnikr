@@ -12,17 +12,17 @@ below.
 ![Alt text](http://g.gravizo.com/g?
   digraph G {
     aize ="4,4";
-    geo_data_source [shape=note, label="Geographical data source\n(Shape file, PostGIS, etc.)"];
+    geo_data_source [shape=note, label="Geographical data source\\n(Shape file, PostGIS, etc.)"];
     mapnik_templates [shape=note, label="Mapnik templates (XML)"];
     mapnik[label="Mapnik 2.1"];
     pycnik_lib[label="Pycnik library"];
     pycnik_scripts[label="Pycnik scripts"];
-    tile_server[label="Tile server\n(mod_tile, TileCache, TileStache, etc.)"];
+    tile_server[label="Tile server\\n(mod_tile, TileCache, TileStache, etc.)"];
     django[label="Django"];
-    javascripts[shape=note, label="Third-parties Javascript files\n(ace.js, leaflet.js)"];
-    html[shape=note, label="Other static files\n(HTML, CSS, PNG, etc.)"];
-    web_server[label="Web server\n(NginX, Apache, etc.)"];
-    browser[label="Web browser\n(Chrome, Firefox, etc.)"];
+    javascripts[shape=note, label="Third-parties Javascript files\\n(ace.js, leaflet.js)"];
+    html[shape=note, label="Other static files\\n(HTML, CSS, PNG, etc.)"];
+    web_server[label="Web server\\n(NginX, Apache, etc.)"];
+    browser[label="Web browser\\n(Chrome, Firefox, etc.)"];
     mapnik -> geo_data_source;
     mapnik -> mapnik_templates;
     pycnik_lib -> mapnik_templates;
