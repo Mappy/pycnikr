@@ -1,24 +1,97 @@
-# pycnikr
+# Principles
 
-Pycnikr is a map design application to create mapnik style with pycnik library
+**pycnikr** is a tool to design [Mapnik](http://mapnik.org/) templates with
+the [pycnik](https://github.com/Mappy/pycnik) library.
 
-# Installation on system
+It allows to edit in a web browser **pycnik** scripts and to view in real-time
+and in the same window the rendering of the corresponding **Mapnik** templates.
 
-    sudo apt-get install libmapnik-dev python-mapnik
-    sudo pip install pycnik
+The main blocks of the environment of **pycnikr** are represented on the figure
+below.
 
-# Installation in a virtualenv
+![Alt text](http://g.gravizo.com/g?
+  digraph G {
 
-Install virtualenv wrapper if you don't have :
+    geo_data_source [shape=note,
+     label="Geographical data source\n(Shape file, PostGIS, etc.)"];
+    mapnik_templates [shape=note, label="Mapnik templates (XML)"];
+    mapnik[label="Mapnik 2.1"];
+    pycnik_lib[label="Pycnik library"];
+    pycnik_scripts[label="Pycnik scripts"];
+    tile_server[label="Tile server\n(mod_tile, TileCache, TileStache, etc.)"];
+    django[label="Django"];
+    javascripts[shape=note,
+     label="Third-parties Javascript files\n(ace.js, leaflet.js)"];
+    html[shape=note, label="Other static files\n(HTML, CSS, PNG, etc.)"];
+    web_server[label="Web server\n(NginX, Apache, etc.)"];
+    browser[label="Web browser\n(Chrome, Firefox, etc.)"];
 
-    sudo pip install virtualenvwrapper
+    mapnik -> geo_data_source;
+    mapnik -> mapnik_templates;
+    pycnik_lib -> mapnik_templates;
+    pycnik_scripts -> pycnik_lib;
+    pycnik_lib -> mapnik
+    django -> pycnik_scripts;
+    django -> javascripts;
+    django -> html;
+    web_server -> django;
+    browser -> web_server;
+    browser -> tile_server;
+    tile_server -> mapnik;
 
-Then :
+  }
+)
 
-    mkvirtualenv pycnikr
-    toggleglobalsitepackages
+# Installation
+
+## Preliminary remarks
+
+**pycnikr** is only a module and must be integrated with various third-parties
+(a Linux distribution, a web server, a tile server, a browser, etc.).
+
+In order to keep the installation procedure as simple as possible, we assume
+the following:
+
+* The tile server is [Mappy/TileStache](https://github.com/Mappy/TileStache)
+* The whole system runs within the Vagrant VM described in the
+[Mappy/TileStache Vagrantfile](https://github.com/Mappy/TileStache/blob/master/Vagrantfile).
+
+## Install Mappy/TileStache
+
+Install first the Vagrant VM of
+[Mappy/TileStache](https://github.com/Mappy/TileStache).
+
+Then, execute the following steps:
+
+    cd /srv/TileStache
+    python setup.py install
+    pip uninstall PIL
+    pip install Pillow
+    ./run_tests.sh
+
+## Install pycnik
+
+The installation of TileStache already executed some steps required to install
+**pycnik**:
+
+* Install the system packages **libmapnik-dev** and **python-mapnik**
+* Make the **mapnik** python package installed at the system level available in
+the virtual environment
+
+The installation of **pycnik** must be completed with the following steps:
+
+    sudo apt-get install libxslt1-dev
     pip install pycnik
 
-Note : Don't forget the command toggleglobalsitepackage before installing pycnik.
+## Install pycnikr
 
-
+    pip install requests
+    cd /srv/TileStache
+    git clone
+    https://github.com/Mappy/pycnikr.git
+    cd pycnikr
+    cd sample
+    python sample_mapnik.py
+    python sample_pycnik.py
+    python sample_tilestache.py
+    python sample_tilestache_server.py
