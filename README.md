@@ -48,14 +48,14 @@ below.
 In order to keep the installation procedure as simple as possible, we assume
 the following:
 
-* The tile server is [Mappy/TileStache](https://github.com/Mappy/TileStache)
+* The tile server is [TileStache](https://github.com/TileStache/TileStache)
 * The whole system runs within the Vagrant VM described in the
-[Mappy/TileStache Vagrantfile](https://github.com/Mappy/TileStache/blob/master/Vagrantfile).
+[TileStache Vagrantfile](https://github.com/TileStache/TileStache/blob/master/Vagrantfile).
 
-## Install Mappy/TileStache
+## Install TileStache
 
 Install first the Vagrant VM of
-[Mappy/TileStache](https://github.com/Mappy/TileStache).
+[TileStache](https://github.com/TileStache/TileStache).
 
 Then, execute the following steps:
 
