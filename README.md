@@ -84,9 +84,5 @@ The installation of **pycnik** must be completed with the following steps:
     pip install requests
     cd /srv/TileStache
     git clone https://github.com/Mappy/pycnikr.git
-    cd pycnikr
-    cd sample
-    python sample_mapnik.py
-    python sample_pycnik.py
-    python sample_tilestache.py
-    python sample_tilestache_server.py
+    cd pycnikr/tests
+    nosetests
