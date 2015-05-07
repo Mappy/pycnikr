@@ -1,41 +1,37 @@
 """
-This script runs a tilestache server in background, and some tile requests are
-done to ensure that the server works, and if the tiles which are received are
-what we expected
+This test illustrates how to run a TileStache server in the background and how
+to send requests to this server to retrieve tiles.
 """
-#!/usr/bin/env python
 
-import subprocess
 import os
-import time
-import requests
 import signal
-from PIL import Image
-from StringIO import StringIO
+import subprocess
+import time
 
-server_script = os.path.join(
-    os.path.dirname(__file__),
-    'tilestache',
-    'tilestache-server.py')
+import requests
 
-config_file = os.path.join(
-    os.path.dirname(__file__),
-    'tilestache',
-    'tilestache.cfg')
+expected_image = 'tile.png'
+actual_image = 'artefacts/tile_server.png'
 
-tilestache_server = subprocess.Popen(
-    'python {script} -c {file}'.format(script=server_script, file=config_file),
-    shell=True,
-    preexec_fn=os.setsid)
+def get_tilestache_file(file_name):
+    return os.path.join(os.path.dirname(__file__), 'tilestache', file_name)
 
-for sec in range(0,3):
-    time.sleep(1)
+server_script = get_tilestache_file('tilestache-server.py')
+config_file = get_tilestache_file('tilestache.cfg')
+
+tilestache_server = subprocess.Popen([server_script, '-c', config_file],
+                                     preexec_fn=os.setsid)
+
+try:
+    time.sleep(1) # To let the time to the server to run
     request = requests.get('http://127.0.0.1:8080/example/0/0/0.png')
-    img_size = Image.open(StringIO(request.content)).size
-
-    assert(request.status_code==200)
-    assert(request.headers['content-type']=='image/png')
-    assert(img_size[0]==256)
-    assert(img_size[1]==256)
-
-os.killpg(tilestache_server.pid, signal.SIGTERM)
+    with open(actual_image, 'w') as actual:
+        actual.write(request.content)
+    assert request.status_code == 200
+    assert request.headers['content-type'] == 'image/png'
+    with open(actual_image) as actual, open(expected_image) as expected:
+        actual_read = expected.read()
+except:
+    raise
+finally:
+    os.killpg(tilestache_server.pid, signal.SIGTERM)
