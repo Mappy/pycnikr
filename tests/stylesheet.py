@@ -21,7 +21,7 @@ Map.buffer_size = 128
 countries = Layer('countries')
 countries.datasource = {
     'type': 'shape',
-    'file': './data/ne_110m_admin_0_countries_merc.shp',
+    'file': './geo_data/ne_110m_admin_0_countries_merc.shp',
 }
 
 zoom_style = {

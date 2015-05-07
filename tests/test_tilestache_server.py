@@ -15,12 +15,12 @@ from StringIO import StringIO
 
 server_script = os.path.join(
     os.path.dirname(__file__),
-    'resources_tilestache',
+    'tilestache',
     'tilestache-server.py')
 
 config_file = os.path.join(
     os.path.dirname(__file__),
-    'resources_tilestache',
+    'tilestache',
     'tilestache.cfg')
 
 tilestache_server = subprocess.Popen(
