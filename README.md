@@ -72,6 +72,8 @@ And execute the following steps from the VM:
     ./run_tests.sh
     python setup.py install
 
+Note : an error can occur for one test : the osgeo TMS server can be unreachable. If it happens, do not worry and continue the installation procedure.
+
 ## Install pycnik
 
 The installation of TileStache already executed some steps required to install
