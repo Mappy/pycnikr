@@ -9,7 +9,8 @@ from StringIO import StringIO
 import ModestMaps
 from PIL import Image
 import TileStache
-import unittest
+
+import artefact
 
 actual_image = 'artefacts/tile_lib.png'
 expected_image = 'tile.png'
@@ -17,7 +18,7 @@ expected_image = 'tile.png'
 def get_tilestache_file(file_name):
     return os.path.join(os.path.dirname(__file__), 'tilestache', file_name)
 
-class TestTileStacheLib(unittest.TestCase):
+class TestTileStacheLib(artefact.TestCaseWithArtefacts):
 
     def test_tilestache_lib(self):
         config = eval(open(get_tilestache_file('tilestache.cfg')).read())

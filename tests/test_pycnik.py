@@ -2,15 +2,15 @@
 This test illustrate how to generate an XML Mapnik template from a pycnik
 stylesheet written in Python.
 """
-
-import unittest
+import os
 
 from pycnik import pycnik
+import artefact
 
 actual_xml_stylesheet = 'artefacts/stylesheet.xml'
 expected_xml_stylesheet = 'stylesheet.xml'
 
-class TestPycnik(unittest.TestCase):
+class TestPycnik(artefact.TestCaseWithArtefacts):
 
     def test_pycnik(self):
         python_stylesheet = pycnik.import_style('stylesheet.py')

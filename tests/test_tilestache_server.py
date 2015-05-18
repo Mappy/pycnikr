@@ -9,7 +9,8 @@ import subprocess
 import time
 
 import requests
-import unittest
+
+import artefact
 
 expected_image = 'tile.png'
 actual_image = 'artefacts/tile_server.png'
@@ -17,9 +18,10 @@ actual_image = 'artefacts/tile_server.png'
 def get_tilestache_file(file_name):
     return os.path.join(os.path.dirname(__file__), 'tilestache', file_name)
 
-class TestTileStacheServer(unittest.TestCase):
+class TestTileStacheServer(artefact.TestCaseWithArtefacts):
 
     def setUp(self):
+        print os.listdir(os.path.dirname(__file__))
         server_script = get_tilestache_file('tilestache-server.py')
         config_file = get_tilestache_file('tilestache.cfg')
         server = subprocess.Popen([server_script, '-c', config_file],
@@ -38,5 +40,3 @@ class TestTileStacheServer(unittest.TestCase):
             actual.write(request.content)
         with open(actual_image) as actual, open(expected_image) as expected:
             self.assertEquals(actual.read(), expected.read())
-
-

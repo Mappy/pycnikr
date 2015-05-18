@@ -2,12 +2,14 @@
 generate an image"""
 
 import mapnik
-import unittest
+import os
+
+import artefact
 
 actual_image = 'artefacts/world.png'
 expected_image = 'world.png'
 
-class TestMapnik(unittest.TestCase):
+class TestMapnik(artefact.TestCaseWithArtefacts):
 
     def test_mapnik(self):
         m = mapnik.Map(600, 300)
