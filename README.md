@@ -57,7 +57,14 @@ the following:
 Install first the Vagrant VM of
 [TileStache](https://github.com/TileStache/TileStache).
 
-Then, execute the following steps:
+    git clone git@github.com:TileStache/TileStache.git
+    cd TileStache
+    vagrant up
+
+Then, connect to the vagrant VM:
+    vagrant ssh
+
+And execute the following steps from the VM:
 
     pip uninstall PIL
     pip install Pillow
@@ -82,7 +89,11 @@ The installation of **pycnik** must be completed with the following steps:
 ## Install pycnikr
 
     pip install requests
-    cd /srv/TileStache
+    cd /srv/tilestache
     git clone https://github.com/Mappy/pycnikr.git
     cd pycnikr/tests
     nosetests
+
+## Install django
+
+    pip install django
