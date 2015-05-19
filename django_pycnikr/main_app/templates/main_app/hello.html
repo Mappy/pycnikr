@@ -3,20 +3,62 @@
   <head>
     <meta charset="utf-8" />
     <title>
-        Hello
+        Pycnikr
     </title>
+
+    <!-- Leaflet CSS -->
     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+    <!-- Leaflet JS -->
     <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+    <!-- Ace JS-->
+    <script src="http://cdn.rawgit.com/ajaxorg/ace-builds/master/src-min/ace.js" type="text/javascript" charset="utf-8"></script>
+    <!-- Local CSS -->
+    <style type="text/css" media="screen">
+        body {
+            overflow: hidden;
+        }
+        #editor {
+            height: 100px;
+            width: 100%;
+        }
+        #map {
+            height: 180px;
+        }
+  </style>
+
 </head>
 <body>
     <h1>Hello {{ name }}</h1>
-    <div id="map" style="height: 180px;"></div>
+
+    <div id="container">
+
+    <!-- Map with Leaflet  -->
+    <div id="map"></div>
+
+    <!-- Code edited with Ace  -->
+    <pre id="editor">function foo(items) {
+        var i;
+        for (i = 0; i &lt; items.length; i++) {
+        alert("Ace Rocks " + items[i]);
+        }
+    }</pre>
+
+    </div>
+    <!-- Local JS handling leaflet -->
     <script type="text/javascript">
         var map = L.map('map').setView([51.505, -0.09], 13);
         L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
     </script>
+
+    <!-- Local JS handling Ace -->
+    <script>
+        var editor = ace.edit("editor");
+        editor.setTheme("http://cdn.rawgit.com/ajaxorg/ace-builds/master/src-min/twilight");
+        editor.getSession().setMode("http://cdn.rawgit.com/ajaxorg/ace/blob/master/lib/ace/mode/javascript");
+    </script>
+
 </body>
 </html>
 
