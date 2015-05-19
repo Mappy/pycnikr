@@ -5,9 +5,18 @@
     <title>
         Hello
     </title>
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+    <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
 </head>
 <body>
     <h1>Hello {{ name }}</h1>
+    <div id="map" style="height: 180px;"></div>
+    <script type="text/javascript">
+        var map = L.map('map').setView([51.505, -0.09], 13);
+        L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+    </script>
 </body>
 </html>
 
