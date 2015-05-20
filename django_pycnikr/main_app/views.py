@@ -1,6 +1,18 @@
+from os.path import join, dirname
+
 from django.shortcuts import render
 
-# Create your views here.
+stylesheets_dir = join(dirname(__file__), 'stylesheets')
 
-def hello(request):
-    return render(request, 'main_app/hello.html', {"name": "pycnikr"})
+def template(request, name):
+    name=name if name.endswith('.py') else name+'.py'
+    stylesheet = open(join(stylesheets_dir, name), 'r')
+    content = stylesheet.read()
+
+    return render(
+        request, 'main_app/hello.html',
+        {
+            "name": "pycnikr",
+            'stylesheet_content': content,
+        }
+    )
