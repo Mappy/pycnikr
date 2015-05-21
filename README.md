@@ -59,17 +59,23 @@ Install first the Vagrant VM of
 
     git clone git@github.com:TileStache/TileStache.git
     cd TileStache
-    vagrant up
+
+Add the following line in the file Vagrantfile:
+
+    config.vm.network :forwarded_port, host: 8001, guest: 8000
 
 Then, connect to the vagrant VM:
+
+    vagrant up
     vagrant ssh
 
 And execute the following steps from the VM:
 
     pip uninstall PIL
     pip install Pillow
-    cd /srv/TileStache
-    ./run_tests.sh
+    LC_CTYPE=en_US.UTF-8
+    cd /srv/tilestache
+    ./runtests.sh
     python setup.py install
 
 Note : an error can occur for one test : the osgeo TMS server can be unreachable. If it happens, do not worry and continue the installation procedure.
@@ -90,12 +96,27 @@ The installation of **pycnik** must be completed with the following steps:
 
 ## Install pycnikr
 
+    pip install django
     pip install requests
     cd /srv/tilestache
     git clone https://github.com/Mappy/pycnikr.git
     cd pycnikr/tests
     nosetests
 
-## Install django
+# Usage
 
-    pip install django
+## Launch pycnikr
+
+In the VM, lauch **pycnikr**:
+
+    cd /srv/tilestache
+    cd pycnikr/django_pycnikr
+    python manage.py runserver 0.0.0.0:8000
+
+## Call pycnikr
+
+In the host, launch a web browser.
+
+Type *http://localhost:8001/sample* in the address bar.
+
+An HTML page should appear, split in two parts, with the code on the left side and a tile on the right side.
