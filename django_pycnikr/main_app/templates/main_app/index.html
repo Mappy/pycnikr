@@ -106,7 +106,7 @@
         function buttonClick(editor) {
             $("#applyButton").click( function() {
                 console.log('I post editor content')
-                $.post("http://127.0.0.1:8001/pycnik/{{ name }}",
+                $.post("pycnik/{{ name }}",
                         editor.getValue(),
                         function(result) {
                             console.log(result)

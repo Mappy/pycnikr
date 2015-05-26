@@ -63,6 +63,7 @@ Install first the Vagrant VM of
 Add the following line in the file Vagrantfile:
 
     config.vm.network :forwarded_port, host: 8001, guest: 8000
+    config.vm.network :forwarded_port, host: 8081, guest: 8080
 
 Then, connect to the vagrant VM:
 
@@ -73,7 +74,6 @@ And execute the following steps from the VM:
 
     pip uninstall PIL
     pip install Pillow
-    LC_CTYPE=en_US.UTF-8
     cd /srv/tilestache
     ./runtests.sh
     python setup.py install
@@ -107,11 +107,21 @@ The installation of **pycnik** must be completed with the following steps:
 
 ## Launch pycnikr
 
-In the VM, lauch **pycnikr**:
+In the VM, lauch **pycnikr** in a shell:
 
+    LC_CTYPE=en_US.UTF-8
     cd /srv/tilestache
     cd pycnikr/django_pycnikr
     python manage.py runserver 0.0.0.0:8000
+
+## Launch TileStache
+
+In the VM, launch **TileStache** in a shell:
+
+    LC_CTYPE=en_US.UTF-8
+    cd /srv/tilestache
+    cd pycnikr/tests/tilestache
+    python tilestache-server.py -c tilestache.cfg -i 0.0.0.0 -p 8080
 
 ## Call pycnikr
 

@@ -38,5 +38,5 @@ class TestTileStacheServer(artefact.TestCaseWithArtefacts):
         self.assertEquals(request.headers['content-type'], 'image/png')
         with open(actual_image, 'w') as actual:
             actual.write(request.content)
-        with open(actual_image) as actual, open(expected_image) as expected:
+        with open(actual_image  ) as actual, open(expected_image) as expected:
             self.assertEquals(actual.read(), expected.read())
