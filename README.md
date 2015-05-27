@@ -120,7 +120,7 @@ In the VM, launch **TileStache** in a shell:
 
     LC_CTYPE=en_US.UTF-8
     cd /srv/tilestache
-    cd pycnikr/tests/tilestache
+    cd pycnikr/tilestache
     python tilestache-server.py -c tilestache.cfg -i 0.0.0.0 -p 8080
 
 ## Call pycnikr
