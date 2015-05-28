@@ -2,8 +2,10 @@
 from os.path import join, dirname
 import tempfile
 
-from django.shortcuts import render
+from django.conf import settings
 from django.http import HttpResponse
+from django.shortcuts import render
+
 
 from pycnik import pycnik
 
@@ -16,8 +18,9 @@ def template(request, name):
     return render(
         request, 'main_app/index.html',
         {
-            "name": name[:-3],
+            'name': name[:-3],
             'stylesheet_content': content,
+            'default_zoom': settings.DEFAULT_ZOOM,
         }
     )
 

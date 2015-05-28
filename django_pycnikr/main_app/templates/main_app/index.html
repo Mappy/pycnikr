@@ -72,7 +72,7 @@
         var get_new_random_layer = function() {
             var url = 'http://127.0.0.1:8081/{{ name }}/{z}/{x}/{y}.png';
             url = url + '?refresh={random}';
-            return new random_layer(url, {attribution: 'test'});
+            return new random_layer(url);
         }
 
         function getCookie(name) {
@@ -147,7 +147,7 @@
         $(document).ready(function() {
             ajaxSetup();
             var editor = aceEditor();
-            var map = L.map('map').setView([0, 0], 2);
+            var map = L.map('map').setView([48.8534100, 2.3488000], {{ default_zoom }});
             var layer = undefined;
             buttonClick(editor, map, layer);
             $("#applyButton").trigger('click');

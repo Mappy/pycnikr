@@ -101,3 +101,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
+
+DEFAULT_ZOOM = 5
+DEFAULT_CENTER = [48.8534100, 2.3488000]
