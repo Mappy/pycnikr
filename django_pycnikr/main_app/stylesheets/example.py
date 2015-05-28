@@ -23,7 +23,7 @@ Map.buffer_size = 128
 countries = Layer('countries')
 countries.datasource = {
     'type': 'shape',
-    'file': './geo_data/ne_110m_admin_0_countries_merc.shp',
+    'file': '/srv/tilestache/pycnikr/django_pycnikr/main_app/geo_data/ne_110m_admin_0_countries_merc.shp',
 }
 
 zoom_style = {
