@@ -31,26 +31,21 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 </head>
 <body>
-    <h1>Hello {{ name }}</h1>
+    <h1>Stylesheet '{{ name }}'</h1>
 
     <a id="saveButton" class="btn btn-info btn-lg">SAVE</a>
     <a id="applyButton" class="btn btn-info btn-lg">APPLY</a>
 
-
     <div id="container">
-
         <div class="row">
-
             <div class="col-xs-6 col-md-6">
                 <!-- Code editor with Ace  -->
                 <pre id="editor">{{ stylesheet_content }}</pre>
             </div>
-
             <div class="col-xs-6 col-md-6">
                 <!-- Map with Leaflet  -->
                 <div id="map"></div>
             </div>
-
         </div>
     </div>
 
@@ -65,14 +60,18 @@
         // would use its own cache, which is different of the cache of the
         // browser.
         var random_layer = L.TileLayer.extend({
-                            options: {
-                                random: {toString:function() {return Math.random()}}
-                            }
-                        });
+                                options: {
+                                    random: {
+                                        toString:function() {
+                                            return Math.random();
+                                        }
+                                    }
+                                }
+                            });
 
         var get_new_random_layer = function() {
-            var url = 'http://127.0.0.1:8081/{{ name }}/{z}/{x}/{y}.png'
-            url = url + '?refresh={random}'
+            var url = 'http://127.0.0.1:8081/{{ name }}/{z}/{x}/{y}.png';
+            url = url + '?refresh={random}';
             return new random_layer(url, {attribution: 'test'});
         }
 
@@ -82,9 +81,10 @@
                 var cookies = document.cookie.split(';');
                 for (var i = 0; i < cookies.length; i++) {
                     var cookie = jQuery.trim(cookies[i]);
-                    // Does this cookie string begin with the name we want?
+                    // Check if the cookie string begins with the right name
                     if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        cookieValue = cookie.substring(name.length + 1)
+                        cookieValue = decodeURIComponent(cookieValue);
                         break;
                     }
                 }
@@ -112,7 +112,7 @@
             editor = ace.edit("editor");
             editor.setTheme("ace/theme/twilight");
             editor.getSession().setMode("ace/mode/python");
-            return editor
+            return editor;
         }
 
         function add_layer(map, layer) {
@@ -126,7 +126,9 @@
                 var body = editor.getValue();
                 $.post(url, body,
                     function(result) {
-                        map.removeLayer(layer);
+                        if (layer !== undefined) {
+                            map.removeLayer(layer);
+                        }
                         layer = get_new_random_layer();
                         layer.addTo(map);
                     });
@@ -137,8 +139,7 @@
                 var body = editor.getValue();
                 $.post(url, body,
                     function(result) {
-                        //result here
-                        console.log('i pushed save')
+                        console.log('Editor content saved on the server');
                     });
             });
         }
@@ -147,11 +148,9 @@
             ajaxSetup();
             var editor = aceEditor();
             var map = L.map('map').setView([0, 0], 2);
-            var layer;
-            layer = get_new_random_layer();
-            layer.addTo(map);
+            var layer = undefined;
             buttonClick(editor, map, layer);
-            $("#applyButton").trigger('click')
+            $("#applyButton").trigger('click');
 
         });
 
