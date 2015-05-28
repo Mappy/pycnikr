@@ -15,11 +15,11 @@
     <style type="text/css" media="screen">
         body {
             overflow: hidden;
+            margin-left: 10px;
+            margin-right: 10px;
         }
-        #editor {
-            height: 700px;
-        }
-        #map {
+        .pycnikr {
+            margin-top:10px;
             height: 700px;
         }
     </style>
@@ -37,18 +37,25 @@
 <body>
     <h1>Stylesheet '{{ name }}'</h1>
 
-    <a id="saveButton" class="btn btn-info btn-lg">SAVE</a>
-    <a id="applyButton" class="btn btn-info btn-lg">APPLY</a>
-
     <div id="container">
         <div class="row">
             <div class="col-xs-6 col-md-6">
+                <a id="reloadButton" class="btn btn-info btn-lg">RELOAD</a>
+                <a id="saveButton" class="btn btn-info btn-lg">SAVE</a>
+            </div>
+            <div class="col-xs-6 col-md-6">
+                <a id="previewButton" class="btn btn-info btn-lg">PREVIEW</a>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-6 col-md-6">
                 <!-- Code editor with Ace  -->
-                <pre id="editor">{{ stylesheet_content }}</pre>
+                <pre id="editor" class="pycnikr">{{ stylesheet_content }}</pre>
             </div>
             <div class="col-xs-6 col-md-6">
                 <!-- Map with Leaflet  -->
-                <div id="map"></div>
+                <div id="map" class="pycnikr"></div>
             </div>
         </div>
     </div>
@@ -119,14 +126,9 @@
             return editor;
         }
 
-        function add_layer(map, layer) {
-            layer = get_new_random_layer();
-            layer.addTo(map);
-        }
-
         function buttonClick(editor, map, layer) {
-            $("#applyButton").click( function() {
-                var url = "apply/{{ name }}";
+            $("#previewButton").click( function() {
+                var url = "preview/{{ name }}";
                 var body = editor.getValue();
                 $.post(url, body,
                     function(result) {
@@ -146,6 +148,10 @@
                         console.log('Editor content saved on the server');
                     });
             });
+
+            $("#reloadButton").click( function() {
+                window.location.reload();
+            });
         }
 
         $(document).ready(function() {
@@ -154,7 +160,7 @@
             var map = L.map('map').setView({{ center }}, {{ zoom }});
             var layer = undefined;
             buttonClick(editor, map, layer);
-            $("#applyButton").trigger('click');
+            $("#previewButton").trigger('click');
 
         });
 

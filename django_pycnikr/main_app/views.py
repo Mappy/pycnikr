@@ -25,7 +25,13 @@ def template(request, name):
         }
     )
 
-def apply(request, name):
+def save(request, name):
+    stylesheet_to_save = join(stylesheets_dir, name + '.py')
+    with open(stylesheet_to_save, 'w') as fd:
+        fd.write(request.body)
+    return HttpResponse('Stylesheet successfully saved')
+
+def preview(request, name):
     tmp_dir = tempfile.gettempdir()
     py_stylesheet_path = join(tmp_dir, name + '.py')
     with open(py_stylesheet_path, 'w') as f:
@@ -33,10 +39,4 @@ def apply(request, name):
     py_stylesheet = pycnik.import_style(py_stylesheet_path)
     pycnik.translate(py_stylesheet, join(tmp_dir, name + '.xml'))
     return HttpResponse('Stylesheet successfully applied')
-
-def save(request, name):
-    stylesheet_to_save = join(stylesheets_dir, name + '.py')
-    with open(stylesheet_to_save, 'w') as fd:
-        fd.write(request.body)
-    return HttpResponse('Stylesheet successfully saved')
 
