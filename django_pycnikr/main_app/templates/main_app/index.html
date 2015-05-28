@@ -122,7 +122,7 @@
 
         function buttonClick(editor, map, layer) {
             $("#applyButton").click( function() {
-                var url = "pycnik/{{ name }}";
+                var url = "apply/{{ name }}";
                 var body = editor.getValue();
                 $.post(url, body,
                     function(result) {
