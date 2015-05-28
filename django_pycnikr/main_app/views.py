@@ -5,12 +5,13 @@ import tempfile
 from django.conf import settings
 from django.http import HttpResponse
 from django.shortcuts import render
-
+from django.views.decorators.csrf import ensure_csrf_cookie
 
 from pycnik import pycnik
 
 stylesheets_dir = join(dirname(__file__), 'stylesheets')
 
+@ensure_csrf_cookie
 def template(request, name):
     name = name if name.endswith('.py') else name + '.py'
     stylesheet = open(join(stylesheets_dir, name), 'r')
