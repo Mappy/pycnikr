@@ -20,7 +20,8 @@ def template(request, name):
         {
             'name': name[:-3],
             'stylesheet_content': content,
-            'default_zoom': settings.DEFAULT_ZOOM,
+            'zoom': settings.DEFAULT_ZOOM,
+            'center':[settings.DEFAULT_LAT, settings.DEFAULT_LON],
         }
     )
 

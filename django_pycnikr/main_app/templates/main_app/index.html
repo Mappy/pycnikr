@@ -151,7 +151,7 @@
         $(document).ready(function() {
             ajaxSetup();
             var editor = aceEditor();
-            var map = L.map('map').setView([48.8534100, 2.3488000], {{ default_zoom }});
+            var map = L.map('map').setView({{ center }}, {{ zoom }});
             var layer = undefined;
             buttonClick(editor, map, layer);
             $("#applyButton").trigger('click');
