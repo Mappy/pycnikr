@@ -57,6 +57,25 @@
     <script>
         "use strict";
 
+        // This class contains in its options an item named 'random' which,
+        // when printed, generates a random integer.
+        // This item can then be used in the pattern of the URL of the layer.
+        // This item will normally be ignored by the server (at least, this is
+        // the case for TileStache) and it will cheat leaflet, which otherwise,
+        // would use its own cache, which is different of the cache of the
+        // browser.
+        var random_layer = L.TileLayer.extend({
+                            options: {
+                                random: {toString:function() {return Math.random()}}
+                            }
+                        });
+
+        var get_new_random_layer = function() {
+            var url = 'http://127.0.0.1:8081/{{ name }}/{z}/{x}/{y}.png'
+            url = url + '?refresh={random}'
+            return new random_layer(url, {attribution: 'test'});
+        }
+
         function getCookie(name) {
             var cookieValue = null;
             if (document.cookie && document.cookie != '') {
@@ -96,24 +115,27 @@
             return editor
         }
 
+        function add_layer(map, layer) {
+            layer = get_new_random_layer();
+            layer.addTo(map);
+        }
+
         function buttonClick(editor, map, layer) {
             $("#applyButton").click( function() {
-                $.post(
-                    "pycnik/{{ name }}",
-                    editor.getValue(),
+                var url = "pycnik/{{ name }}";
+                var body = editor.getValue();
+                $.post(url, body,
                     function(result) {
-                        map.removeLayer(layer)
-                        var layer = L.tileLayer('http://127.0.0.1:8081/{{ name }}/{z}/{x}/{y}.png', {
-                            attribution: 'test'
-                        });
+                        map.removeLayer(layer);
+                        layer = get_new_random_layer();
                         layer.addTo(map);
                     });
             });
 
             $("#saveButton").click( function() {
-                $.post(
-                    "save/{{ name }}",
-                    editor.getValue(),
+                var url = "save/{{ name }}";
+                var body = editor.getValue();
+                $.post(url, body,
                     function(result) {
                         //result here
                         console.log('i pushed save')
@@ -125,9 +147,8 @@
             ajaxSetup();
             var editor = aceEditor();
             var map = L.map('map').setView([0, 0], 2);
-            var layer = L.tileLayer('http://127.0.0.1:8081/{{ name }}/{z}/{x}/{y}.png', {
-                attribution: 'test'}
-            );
+            var layer;
+            layer = get_new_random_layer();
             layer.addTo(map);
             buttonClick(editor, map, layer);
         });

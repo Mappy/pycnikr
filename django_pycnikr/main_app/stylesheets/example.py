@@ -12,10 +12,9 @@ Map.LEVEL_NUMBER = 20
 Map.ZOOM_FACTOR = 2
 
 # Map definition
-#Map.background_color = 'rgb(70,130,180)'  # steelblue
+Map.background_color = 'rgb(70,130,180)'  # steelblue
 #Map.background_color = 'rgb(154, 205, 50)'  # green
-#Map.background_color = 'rgb(0, 0, 0)'  # black
-Map.background_color = 'rgb(255, 51, 51)'  # red
+
 Map.srs = '+init=epsg:3857'  # pseudo mercator
 Map.minimum_version = '2.0'
 Map.buffer_size = 128
