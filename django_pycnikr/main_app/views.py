@@ -22,7 +22,7 @@ def select_py_style_sheet(file_path):
 @ensure_csrf_cookie
 def template(request, name):
     py_style_sheets = map(select_py_style_sheet, listdir(py_style_sheets_dir))
-    py_style_sheets = filter(bool, py_style_sheets)
+    py_style_sheets = filter(lambda x: bool(x) and x != name, py_style_sheets)
     name = name if name.endswith('.py') else name + '.py'
     py_style_sheet = open(join(py_style_sheets_dir, name), 'r')
     py_style_sheet_content = py_style_sheet.read()
