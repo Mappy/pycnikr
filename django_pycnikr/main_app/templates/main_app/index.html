@@ -37,6 +37,7 @@
 <body>
     <h1>Stylesheet '{{ name }}'</h1>
 
+    <p>{{ style_sheets }}</p>
     <div id="container">
         <div class="row">
             <div class="col-xs-6 col-md-6">
@@ -51,7 +52,7 @@
         <div class="row">
             <div class="col-xs-6 col-md-6">
                 <!-- Code editor with Ace  -->
-                <pre id="editor" class="pycnikr">{{ stylesheet_content }}</pre>
+                <pre id="editor" class="pycnikr">{{ style_sheet_content }}</pre>
             </div>
             <div class="col-xs-6 col-md-6">
                 <!-- Map with Leaflet  -->

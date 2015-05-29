@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
-from os.path import join, dirname
+
+from os import listdir
+from os.path import dirname, join, split, splitext
 import tempfile
 
 from django.conf import settings
@@ -9,35 +11,44 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 
 from pycnik import pycnik
 
-stylesheets_dir = join(dirname(__file__), 'stylesheets')
+py_style_sheets_dir = join(dirname(__file__), 'style_sheets')
+
+def select_py_style_sheet(file_path):
+    file_dir, file_name = split(file_path)
+    file_name, ext = splitext(file_name)
+    if ext == '.py':
+        return file_name
 
 @ensure_csrf_cookie
 def template(request, name):
+    py_style_sheets = map(select_py_style_sheet, listdir(py_style_sheets_dir))
+    py_style_sheets = filter(bool, py_style_sheets)
     name = name if name.endswith('.py') else name + '.py'
-    stylesheet = open(join(stylesheets_dir, name), 'r')
-    content = stylesheet.read()
+    py_style_sheet = open(join(py_style_sheets_dir, name), 'r')
+    py_style_sheet_content = py_style_sheet.read()
     return render(
         request, 'main_app/index.html',
         {
+            'style_sheets': py_style_sheets,
             'name': name[:-3],
-            'stylesheet_content': content,
+            'style_sheet_content': py_style_sheet_content,
             'zoom': settings.DEFAULT_ZOOM,
             'center':[settings.DEFAULT_LAT, settings.DEFAULT_LON],
         }
     )
 
 def save(request, name):
-    stylesheet_to_save = join(stylesheets_dir, name + '.py')
-    with open(stylesheet_to_save, 'w') as fd:
+    style_sheet_to_save = join(py_style_sheets_dir, name + '.py')
+    with open(style_sheet_to_save, 'w') as fd:
         fd.write(request.body)
-    return HttpResponse('Stylesheet successfully saved')
+    return HttpResponse('Style sheet successfully saved')
 
 def preview(request, name):
     tmp_dir = tempfile.gettempdir()
-    py_stylesheet_path = join(tmp_dir, name + '.py')
-    with open(py_stylesheet_path, 'w') as f:
+    py_style_sheet_path = join(tmp_dir, name + '.py')
+    with open(py_style_sheet_path, 'w') as f:
        f.write(request.body)
-    py_stylesheet = pycnik.import_style(py_stylesheet_path)
-    pycnik.translate(py_stylesheet, join(tmp_dir, name + '.xml'))
-    return HttpResponse('Stylesheet successfully applied')
+    py_style_sheet = pycnik.import_style(py_style_sheet_path)
+    pycnik.translate(py_style_sheet, join(tmp_dir, name + '.xml'))
+    return HttpResponse('Style sheet successfully applied')
 
