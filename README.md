@@ -127,6 +127,6 @@ In the VM, launch **TileStache** in a shell:
 
 In the host, launch a web browser.
 
-Type *http://localhost:8001/sample* in the address bar.
+Type *http://localhost:8001/example* in the address bar.
 
 An HTML page should appear, split in two parts, with the code on the left side and a tile on the right side.
