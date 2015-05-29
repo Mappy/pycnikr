@@ -32,8 +32,9 @@ def template(request, name):
             'style_sheets': py_style_sheets,
             'name': name[:-3],
             'style_sheet_content': py_style_sheet_content,
-            'zoom': settings.DEFAULT_ZOOM,
-            'center':[settings.DEFAULT_LAT, settings.DEFAULT_LON],
+            'zoom': settings.PYCNIKR_DEFAULT_ZOOM,
+            'center':[settings.PYCNIKR_DEFAULT_CENTER_LAT,
+                      settings.PYCNIKR_DEFAULT_CENTER_LON],
         }
     )
 
