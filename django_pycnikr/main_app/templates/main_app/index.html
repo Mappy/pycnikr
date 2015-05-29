@@ -37,12 +37,24 @@
 <body>
     <h1>Stylesheet '{{ name }}'</h1>
 
-    <p>{{ style_sheets }}</p>
     <div id="container">
         <div class="row">
             <div class="col-xs-6 col-md-6">
-                <a id="reloadButton" class="btn btn-info btn-lg">RELOAD</a>
-                <a id="saveButton" class="btn btn-info btn-lg">SAVE</a>
+              <div class="btn-group">
+                <button type="button" class="btn btn-info btn-lg">SELECT</button>
+                <button type="button" class="btn btn-info btn-lg dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                  <span class="caret"></span>
+                  <span class="sr-only">Toggle Dropdown</span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                  <ul>
+                    {% for style_sheet in style_sheets %}
+                    <li><a href="#">{{ style_sheet }}</a></li>
+                    {% endfor %}
+                  </ul>
+              </div>
+              <a id="reloadButton" class="btn btn-info btn-lg">RELOAD</a>
+              <a id="saveButton" class="btn btn-info btn-lg">SAVE</a>
             </div>
             <div class="col-xs-6 col-md-6">
                 <a id="previewButton" class="btn btn-info btn-lg">PREVIEW</a>
