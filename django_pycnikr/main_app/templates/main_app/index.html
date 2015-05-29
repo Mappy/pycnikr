@@ -24,6 +24,10 @@
         ul {
             list-style-type: none;
         }
+       #error {
+           font-family: monospace;
+           white-space: pre;
+       }
     </style>
     <!-- jQuery JS  -->
     <script src="https://code.jquery.com/jquery-2.1.4.js" type="text/javascript" charset="utf-8"></script>
@@ -59,6 +63,11 @@
             </div>
             <div class="col-xs-6 col-md-6">
                 <a id="previewButton" class="btn btn-info btn-lg">PREVIEW</a>
+                <span class="alert alert-danger" role="alert">
+                  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                  <span class="sr-only">Error:</span>
+                  <span id="error"></span>
+                </span>
             </div>
         </div>
 
@@ -144,14 +153,23 @@
             $("#previewButton").click( function() {
                 var url = "preview/{{ name }}";
                 var body = editor.getValue();
-                $.post(url, body,
-                    function(result) {
+                $.post(url, body).done(
+                    function() {
                         if (layer !== undefined) {
                             map.removeLayer(layer);
                         }
                         layer = get_new_random_layer();
                         layer.addTo(map);
-                    });
+                        $(".alert").hide();
+                    }).fail(
+                    function(jqXHR) {
+                        if (layer !== undefined) {
+                            map.removeLayer(layer);
+                        }
+                        var error = /.*\n(.*)\n\n(Request Method: POST)/.exec(jqXHR.responseText)[1];
+                        $(".alert").show();
+                        $("#error").text(error);
+                });
             });
 
             $("#saveButton").click( function() {
