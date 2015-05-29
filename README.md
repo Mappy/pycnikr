@@ -103,6 +103,31 @@ The installation of **pycnik** must be completed with the following steps:
     cd pycnikr/tests
     nosetests
 
+# Configuration
+
+## Configure pycknir
+
+In the VM, edit the settings of the Django server:
+
+    cd /srv/tilestache
+    cd pycnikr/django_pycnikr/django_pycnikr
+    vim settings.py
+
+The settings to be configured are all prefixed by **PYCNIKR_**.
+
+The meaning of the different parameters is detailed in the comments inside the
+file *settings.py*.
+
+## Configure TileStache
+
+In the VM, edit the settings of TileStache:
+
+    cd /srv/tilestache
+    cd pycnikr/tilestache
+    vim tilestache.cfg
+
+For each style sheet (say *style\_sheet.py*) contained in the style sheets directory configured in Django, there must be a layer configured in TileStache, with a **mapfile** parameter designating a file in the */tmp* directory and with the same name (i.e. */tmp/style\_sheet.xml* in our example).
+
 # Usage
 
 ## Launch pycnikr
