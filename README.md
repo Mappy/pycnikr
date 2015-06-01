@@ -52,15 +52,21 @@ the following:
 * The whole system runs within the Vagrant VM described in the
 [TileStache Vagrantfile](https://github.com/TileStache/TileStache/blob/master/Vagrantfile).
 
-## Install TileStache
+## Prepare the VM to install TileStache
 
 Install first the Vagrant VM of
 [TileStache](https://github.com/TileStache/TileStache).
 
+    cd
     git clone git@github.com:TileStache/TileStache.git
     cd TileStache
 
-Add the following line in the file Vagrantfile:
+Set the following synchronised folders in the file Vagrantfile:
+
+    config.vm.synced_folder "~/TileStache", "/srv/tilestache"
+    config.vm.synced_folder "~/pycnikr", "/srv/pycnikr"
+
+Set the following port forwardings in the file Vagrantfile:
 
     config.vm.network :forwarded_port, host: 8001, guest: 8000
     config.vm.network :forwarded_port, host: 8081, guest: 8080
@@ -76,7 +82,6 @@ And execute the following steps from the VM:
     pip install Pillow
     cd /srv/tilestache
     ./runtests.sh
-    python setup.py install
 
 Note : an error can occur for one test : the osgeo TMS server can be unreachable. If it happens, do not worry and continue the installation procedure.
 
@@ -96,11 +101,12 @@ The installation of **pycnik** must be completed with the following steps:
 
 ## Install pycnikr
 
+    pip install TileStache
     pip install django
     pip install requests
-    cd /srv/tilestache
+    cd /srv/pycnikr
     git clone https://github.com/Mappy/pycnikr.git
-    cd pycnikr/tests
+    cd tests
     nosetests
 
 # Configuration
@@ -109,8 +115,8 @@ The installation of **pycnik** must be completed with the following steps:
 
 In the VM, edit the settings of the Django server:
 
-    cd /srv/tilestache
-    cd pycnikr/django_pycnikr/django_pycnikr
+    cd /srv/pycnikr
+    cd django_pycnikr/django_pycnikr
     vim settings.py
 
 The settings to be configured are all prefixed by **PYCNIKR_**.
@@ -122,8 +128,8 @@ file *settings.py*.
 
 In the VM, edit the settings of TileStache:
 
-    cd /srv/tilestache
-    cd pycnikr/tilestache
+    cd /srv/pycnikr
+    cd django_pycnikr/tilestache
     vim tilestache.cfg
 
 For each style sheet (say *style\_sheet.py*) contained in the style sheets directory configured in Django, there must be a layer configured in TileStache, with a **mapfile** parameter designating a file in the */tmp* directory and with the same name (i.e. */tmp/style\_sheet.xml* in our example).
@@ -135,8 +141,8 @@ For each style sheet (say *style\_sheet.py*) contained in the style sheets direc
 In the VM, lauch **pycnikr** in a shell:
 
     LC_CTYPE=en_US.UTF-8
-    cd /srv/tilestache
-    cd pycnikr/django_pycnikr
+    cd /srv/pycnikr
+    cd django_pycnikr
     python manage.py runserver 0.0.0.0:8000 --noreload
 
 ## Call pycnikr
