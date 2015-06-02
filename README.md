@@ -52,60 +52,58 @@ the following:
 * The whole system runs within the Vagrant VM described in the
 [TileStache Vagrantfile](https://github.com/TileStache/TileStache/blob/master/Vagrantfile).
 
-## Prepare the VM to install TileStache
+## Install TileStache in a Vagrant VM
 
-Install first the Vagrant VM of
-[TileStache](https://github.com/TileStache/TileStache).
+Install the Vagrant VM of
+[TileStache](https://github.com/TileStache/TileStache):
 
     cd
     git clone git@github.com:TileStache/TileStache.git
     cd TileStache
 
-Set the following synchronised folders in the file Vagrantfile:
+Set the following synchronised folders in the file *Vagrantfile*:
 
     config.vm.synced_folder "~/TileStache", "/srv/tilestache"
     config.vm.synced_folder "~/pycnikr", "/srv/pycnikr"
 
-Set the following port forwardings in the file Vagrantfile:
+Set the following port forwardings in the file *Vagrantfile*:
 
     config.vm.network :forwarded_port, host: 8001, guest: 8000
     config.vm.network :forwarded_port, host: 8081, guest: 8080
 
-Then, connect to the vagrant VM:
+Connect to the Vagrant VM:
 
     vagrant up
     vagrant ssh
 
-And execute the following steps from the VM:
+Execute the following steps inside the VM:
 
     pip uninstall PIL
     pip install Pillow
-    cd /srv/tilestache
-    ./runtests.sh
-
-Note : an error can occur for one test : the osgeo TMS server can be unreachable. If it happens, do not worry and continue the installation procedure.
+    pip install TileStache
 
 ## Install pycnik
 
-The installation of TileStache already executed some steps required to install
-**pycnik**:
+The installation of TileStache already executed some steps required to install for the installation of [pycnik](https://github.com/Mappy/pycnik).
 
-* Install the system packages **libmapnik-dev** and **python-mapnik**
-* Make the **mapnik** python package installed at the system level available in
-the virtual environment
-
-The installation of **pycnik** must be completed with the following steps:
+To finalize the installation of **pycnik**, complete the following steps inside the VM:
 
     sudo apt-get install libxslt1-dev
     pip install pycnik
 
 ## Install pycnikr
 
-    pip install TileStache
+In the host:
+
+    cd
+    git clone https://github.com/Mappy/pycnikr.git
+
+
+In the VM:
+
     pip install django
     pip install requests
     cd /srv/pycnikr
-    git clone https://github.com/Mappy/pycnikr.git
     cd tests
     nosetests
 
