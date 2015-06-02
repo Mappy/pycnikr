@@ -54,6 +54,7 @@ In order to keep the installation as simple as possible, we assume in the follow
 To install the VM with **pycnikr**:
 
     git clone https://github.com/Mappy/pycnikr.git
+    cd pycnikr
     vagrant up
 
 # Configuration
