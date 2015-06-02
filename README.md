@@ -57,6 +57,24 @@ To install the VM with **pycnikr**:
     cd pycnikr
     vagrant up
 
+# Usage
+
+## Launch pycnikr
+
+To lauch **pycnikr**:
+
+    vagrant ssh
+    cd /srv/pycnikr
+    python manage.py runserver 0.0.0.0:8000 --noreload
+
+## Call pycnikr
+
+In the host, open a web browser at the address *http://localhost:8001/example*.
+
+An HTML page should appear, split in two parts, with the code on the left side
+and a tile on the right side.
+
+
 # Configuration
 
 ## Configure pycnikr
