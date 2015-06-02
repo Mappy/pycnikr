@@ -66,9 +66,10 @@ echo "
 ~/.virtualenvs/tilestache/bin/pip install TileStache
 
 # install pycnik
+echo "LC_CTYPE=en_US.UTF-8" >> ~/.bashrc
 LC_CTYPE=en_US.UTF-8
-locale-gen
 sudo apt-get -q install libxslt1-dev
+
 ~/.virtualenvs/tilestache/bin/pip install pycnik
 
 # install standard plugins for Mapnik
