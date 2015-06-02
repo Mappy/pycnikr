@@ -107,6 +107,16 @@ In the VM:
     cd tests
     nosetests
 
+## Finalize Mapnik installation
+
+To be able to render a raster on the map:
+
+    sudo apt-get install mapnik-input-plugin-gdal
+
+To be able to render a PostGIS database on the map:
+
+    sudo apt-get install mapnik-input-plugin-postgis
+
 # Configuration
 
 ## Configure pycknir
