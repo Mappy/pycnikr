@@ -88,6 +88,8 @@ The installation of TileStache already executed some steps required to install f
 
 To finalize the installation of **pycnik**, complete the following steps inside the VM:
 
+    LC_CTYPE=en_US.UTF-8
+    sudo locale-gen
     sudo apt-get install libxslt1-dev
     pip install pycnik
 
@@ -148,7 +150,6 @@ For each style sheet (say *style\_sheet.py*) contained in the style sheets direc
 
 In the VM, lauch **pycnikr** in a shell:
 
-    LC_CTYPE=en_US.UTF-8
     cd /srv/pycnikr
     python manage.py runserver 0.0.0.0:8000 --noreload
 
