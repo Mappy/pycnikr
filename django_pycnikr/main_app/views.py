@@ -45,7 +45,7 @@ def save(request, name):
     return HttpResponse('Style sheet successfully saved')
 
 def preview(request, name):
-    tmp_dir = tempfile.gettempdir()
+    tmp_dir = settings.PYCNIKR_TMP_STYLE_SHEETS_DIR
     py_style_sheet_path = join(tmp_dir, name + '.py')
     with open(py_style_sheet_path, 'w') as f:
        f.write(request.body)

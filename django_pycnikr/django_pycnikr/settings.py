@@ -110,3 +110,6 @@ PYCNIKR_DEFAULT_CENTER_LAT = 48.8534100
 PYCNIKR_DEFAULT_CENTER_LON = 2.3488000
 # Directory containing the style sheets
 PYCNIKR_STYLE_SHEETS_DIR = os.path.join(BASE_DIR, 'main_app', 'style_sheets')
+# Directory where Python style sheets are copied and XML style sheets are
+# generated
+PYCNIKR_TMP_STYLESHEETS_DIR = '/tmp'
