@@ -21,110 +21,44 @@ below.
     django[label="Django"];
     javascripts[shape=note, label="Third-parties Javascript files\\n(ace.js, leaflet.js, etc.)"];
     html[shape=note, label="Other static files\\n(HTML, CSS, PNG, etc.)"];
-    web_server[label="Web server\\n(NginX, Apache, etc.)"];
     browser[label="Web browser\\n(Chrome, Firefox, etc.)"];
     mapnik -> geo_data_source;
     mapnik -> mapnik_templates;
     pycnik_lib -> mapnik_templates;
     pycnik_scripts -> pycnik_lib;
-    pycnik_lib -> mapnik
     django -> pycnik_scripts;
     django -> javascripts;
     django -> html;
-    web_server -> django;
-    browser -> web_server;
+    browser -> django;
     browser -> tile_server;
     tile_server -> mapnik;
   }
 )
 
-# Installation
+# Preliminary remarks
 
-## Preliminary remarks
+**pycnikr** is only a software component and must be integrated with various third-parties
+(a Linux distribution, a tile server, a browser, etc.).
 
-**pycnikr** is only a module and must be integrated with various third-parties
-(a Linux distribution, a web server, a tile server, a browser, etc.).
-
-In order to keep the installation procedure as simple as possible, we assume
-the following:
+In order to keep the installation as simple as possible, we assume in the following procedure that:
 
 * The tile server is [TileStache](https://github.com/TileStache/TileStache)
-* The whole system runs within the Vagrant VM described in the
-[TileStache Vagrantfile](https://github.com/TileStache/TileStache/blob/master/Vagrantfile).
+* The whole system, except the browser, runs within a Vagrant VM
 
-## Install TileStache in a Vagrant VM
+# Installation
 
-Install the Vagrant VM of
-[TileStache](https://github.com/TileStache/TileStache):
+To install the VM with **pycnikr**:
 
-    cd
-    git clone git@github.com:TileStache/TileStache.git
-    cd TileStache
-
-Set the following synchronised folders in the file *Vagrantfile*:
-
-    config.vm.synced_folder "~/TileStache", "/srv/tilestache"
-    config.vm.synced_folder "~/pycnikr", "/srv/pycnikr"
-
-Set the following port forwardings in the file *Vagrantfile*:
-
-    config.vm.network :forwarded_port, host: 8001, guest: 8000
-    config.vm.network :forwarded_port, host: 8081, guest: 8080
-
-Connect to the Vagrant VM:
-
-    vagrant up
-    vagrant ssh
-
-Execute the following steps inside the VM:
-
-    pip uninstall PIL
-    pip install Pillow
-    pip install TileStache
-
-## Install pycnik
-
-The installation of TileStache already executed some steps required to install for the installation of [pycnik](https://github.com/Mappy/pycnik).
-
-To finalize the installation of **pycnik**, complete the following steps inside the VM:
-
-    LC_CTYPE=en_US.UTF-8
-    sudo locale-gen
-    sudo apt-get install libxslt1-dev
-    pip install pycnik
-
-## Install pycnikr
-
-In the host:
-
-    cd
     git clone https://github.com/Mappy/pycnikr.git
-
-
-In the VM:
-
-    pip install django
-    pip install requests
-    cd /srv/pycnikr
-    cd tests
-    nosetests
-
-## Finalize Mapnik installation
-
-To be able to render a raster on the map:
-
-    sudo apt-get install mapnik-input-plugin-gdal
-
-To be able to render a PostGIS database on the map:
-
-    sudo apt-get install mapnik-input-plugin-postgis
+    vagrant up
 
 # Configuration
 
 ## Configure pycnikr
 
-In the VM, edit the settings of the Django server:
+To edit the settings of the Django server:
 
+    vagrant ssh
     cd /srv/pycnikr
     cd django_pycnikr
     vim settings.py
@@ -136,28 +70,32 @@ file *settings.py*.
 
 ## Configure TileStache
 
-In the VM, edit the settings of TileStache:
+To edit the settings of **TileStache**:
 
+    vagrant ssh
     cd /srv/pycnikr
     cd tilestache
     vim tilestache.cfg
 
-For each style sheet (say *style\_sheet.py*) contained in the style sheets directory configured in Django, there must be a layer configured in TileStache, with a **mapfile** parameter designating a file in the */tmp* directory and with the same name (i.e. */tmp/style\_sheet.xml* in our example).
+For each style sheet (say *style\_sheet.py*) contained in directory identified by the Django setting **PYCNIKR_STYLE_SHEETS_DIR**:
+* There must be a layer configured in **TileStache**
+* This layer must contain a **mapfile** parameter, which contains the path of an XML file
+* The directory of this file must be the same as the Django setting **PYCNIKR_TMP_STYLE_SHEETS_DIR**
+* The name of the file must be the same as the one of the style sheet (i.e. *style\_sheet.xml* in our example).
 
 # Usage
 
 ## Launch pycnikr
 
-In the VM, lauch **pycnikr** in a shell:
+To lauch **pycnikr**:
 
+    vagrant ssh
     cd /srv/pycnikr
     python manage.py runserver 0.0.0.0:8000 --noreload
 
 ## Call pycnikr
 
-In the host, launch a web browser.
-
-Type *http://localhost:8001/example* in the address bar.
+In the host, open a web browser at the address *http://localhost:8001/example*.
 
 An HTML page should appear, split in two parts, with the code on the left side
 and a tile on the right side.
@@ -173,7 +111,7 @@ new application adapted to the needs of another tile server.
 
 All in all, the replacement consists in the following steps:
 
-* Install the system and Python dependencies of the new tile server
+* Install in the VM the system and Python dependencies of the new tile server
 * Develop a new application using the application **tilestache** of **pycnikr**
 as model
 * Add the new application in the INSTALLED_APPS
