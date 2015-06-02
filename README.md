@@ -27,8 +27,12 @@ below.
     pycnik_lib -> mapnik_templates;
     pycnik_scripts -> pycnik_lib;
     django -> pycnik_scripts;
-    django -> javascripts;
-    django -> html;
+    django -> tile_server[label="start/stop"];
+    subgraph cluster {
+        label="pycnikr"
+        django -> javascripts;
+        django -> html;
+    }
     browser -> django;
     browser -> tile_server;
     tile_server -> mapnik;
