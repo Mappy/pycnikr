@@ -80,5 +80,8 @@ sudo apt-get install mapnik-input-plugin-postgis # for PostGIS
 ~/.virtualenvs/tilestache/bin/pip install django
 ~/.virtualenvs/tilestache/bin/pip install requests
 
+# Make sure the scripts are the in the PATH
+echo "PATH=/srv/pycnikr/scripts:$PATH" >> ~/.bashrc
+
 # we did it. let's mark the script as complete
 touch ~/.bootstrap_complete

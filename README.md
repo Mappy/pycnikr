@@ -64,8 +64,7 @@ To install the VM with **pycnikr**:
 To lauch **pycnikr**:
 
     vagrant ssh
-    cd /srv/pycnikr
-    python manage.py runserver 0.0.0.0:8000 --noreload
+    pycnikr-runserver
 
 ## Call pycnikr
 
@@ -74,7 +73,6 @@ In the host, open a web browser at the address *http://localhost:8001/example*.
 An HTML page should appear, split in two parts, with the code on the left side
 and a tile on the right side.
 
-
 # Configuration
 
 ## Configure pycnikr
@@ -82,9 +80,7 @@ and a tile on the right side.
 To edit the settings of the Django server:
 
     vagrant ssh
-    cd /srv/pycnikr
-    cd django_pycnikr
-    vim settings.py
+    pycnikr-config
 
 The settings to be configured are all prefixed by **PYCNIKR_**.
 
@@ -96,32 +92,13 @@ file *settings.py*.
 To edit the settings of **TileStache**:
 
     vagrant ssh
-    cd /srv/pycnikr
-    cd tilestache
-    vim tilestache.cfg
+    pycnikr-config-tilestache
 
 For each style sheet (say *style\_sheet.py*) contained in directory identified by the Django setting **PYCNIKR_STYLE_SHEETS_DIR**:
 * There must be a layer configured in **TileStache**
 * This layer must contain a **mapfile** parameter, which contains the path of an XML file
 * The directory of this file must be the same as the Django setting **PYCNIKR_TMP_STYLE_SHEETS_DIR**
 * The name of the file must be the same as the one of the style sheet (i.e. *style\_sheet.xml* in our example).
-
-# Usage
-
-## Launch pycnikr
-
-To lauch **pycnikr**:
-
-    vagrant ssh
-    cd /srv/pycnikr
-    python manage.py runserver 0.0.0.0:8000 --noreload
-
-## Call pycnikr
-
-In the host, open a web browser at the address *http://localhost:8001/example*.
-
-An HTML page should appear, split in two parts, with the code on the left side
-and a tile on the right side.
 
 # Replacement of TileStache by another tile server
 

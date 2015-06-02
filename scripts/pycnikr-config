@@ -1,0 +1,1 @@
+"${EDITOR:-vim}" /srv/pycnikr/django_pycnikr/settings.py
