@@ -119,12 +119,12 @@ To be able to render a PostGIS database on the map:
 
 # Configuration
 
-## Configure pycknir
+## Configure pycnikr
 
 In the VM, edit the settings of the Django server:
 
     cd /srv/pycnikr
-    cd django_pycnikr/django_pycnikr
+    cd django_pycnikr
     vim settings.py
 
 The settings to be configured are all prefixed by **PYCNIKR_**.
@@ -137,7 +137,7 @@ file *settings.py*.
 In the VM, edit the settings of TileStache:
 
     cd /srv/pycnikr
-    cd django_pycnikr/tilestache
+    cd tilestache
     vim tilestache.cfg
 
 For each style sheet (say *style\_sheet.py*) contained in the style sheets directory configured in Django, there must be a layer configured in TileStache, with a **mapfile** parameter designating a file in the */tmp* directory and with the same name (i.e. */tmp/style\_sheet.xml* in our example).
@@ -150,7 +150,6 @@ In the VM, lauch **pycnikr** in a shell:
 
     LC_CTYPE=en_US.UTF-8
     cd /srv/pycnikr
-    cd django_pycnikr
     python manage.py runserver 0.0.0.0:8000 --noreload
 
 ## Call pycnikr
@@ -174,7 +173,7 @@ new application adapted to the needs of another tile server.
 All in all, the replacement consists in the following steps:
 
 * Install the system and Python dependencies of the new tile server
-* Develop a new application using the application **tilestache** of **pycknikr**
+* Develop a new application using the application **tilestache** of **pycnikr**
 as model
 * Add the new application in the INSTALLED_APPS
 * Remove **tilestache** from the INSTALLED_APPS

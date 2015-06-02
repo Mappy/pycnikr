@@ -16,9 +16,9 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 
-from main_app import urls as main_app_urls
+from pycnikr import urls as pycnikr_urls
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-    url(r'', include(main_app_urls)),
+    url(r'', include(pycnikr_urls)),
 ]
