@@ -47,8 +47,8 @@
         <div class="row">
             <div class="col-xs-6 col-md-6">
               <div class="btn-group">
-                <button type="button" class="btn btn-info btn-lg">{{ name }}</button>
-                <button type="button" class="btn btn-info btn-lg dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                <button type="button" title="Select the template to edit" class="btn btn-info btn-lg">{{ name }}</button>
+                <button type="button" title="Select the template to edit" class="btn btn-info btn-lg dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                   <span class="caret"></span>
                   <span class="sr-only">Toggle Dropdown</span>
                 </button>
@@ -59,11 +59,11 @@
                     {% endfor %}
                   </ul>
               </div>
-              <a id="reloadButton" class="btn btn-info btn-lg">RELOAD</a>
-              <a id="saveButton" class="btn btn-info btn-lg">SAVE</a>
+              <a id="reloadButton" title="Reload the template from the server in its original state" class="btn btn-info btn-lg">RELOAD</a>
+              <a id="saveButton" title="Save the modifications of the template on the server" class="btn btn-info btn-lg">SAVE</a>
             </div>
             <div class="col-xs-6 col-md-6">
-                <a id="previewButton" class="btn btn-info btn-lg">PREVIEW</a>
+                <a id="previewButton" title="Generate map with the stylesheet as it is in the editor" class="btn btn-info btn-lg">PREVIEW</a>
                 <span class="alert alert-danger" role="alert">
                   <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                   <span class="sr-only">Error:</span>
