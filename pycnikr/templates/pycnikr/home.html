@@ -12,6 +12,10 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 </head>
 <body>
+    <p class="bg-primary">
+        PycnikR is a tool to design Mapnik templates with the pycnik library. The availables templates are :
+    </p>
+
     <div class="btn-group-vertical" aria-label="Vertical button group" role="group">
         {% for style_sheet in style_sheets %}
             <button class="btn btn-default" type="button" onclick="window.location.href='{{ style_sheet }}'">
