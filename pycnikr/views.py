@@ -11,6 +11,8 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 
 from pycnik import pycnik
 
+py_style_sheets_dir = settings.PYCNIKR_STYLE_SHEETS_DIR
+
 def select_py_style_sheet(file_path):
     file_dir, file_name = split(file_path)
     file_name, ext = splitext(file_name)
@@ -19,7 +21,7 @@ def select_py_style_sheet(file_path):
 
 @ensure_csrf_cookie
 def template(request, name):
-    py_style_sheets_dir = settings.PYCNIKR_STYLE_SHEETS_DIR
+
     py_style_sheets = map(select_py_style_sheet, listdir(py_style_sheets_dir))
     py_style_sheets = filter(lambda x: bool(x) and x != name, py_style_sheets)
     name = name if name.endswith('.py') else name + '.py'
@@ -52,4 +54,16 @@ def preview(request, name):
     py_style_sheet = pycnik.import_style(py_style_sheet_path)
     pycnik.translate(py_style_sheet, join(tmp_dir, name + '.xml'))
     return HttpResponse('Style sheet successfully applied')
+
+def home(request):
+    style_sheets = [splitext(stylesheet)[0]
+                        for stylesheet in listdir(py_style_sheets_dir)]
+    print style_sheets
+
+    return render(
+        request, 'pycnikr/home.html',
+        {
+            'style_sheets': style_sheets,
+        }
+    )
 
