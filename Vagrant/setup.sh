@@ -65,11 +65,14 @@ echo "
 # install TileStache
 ~/.virtualenvs/tilestache/bin/pip install TileStache
 
-# install pycnik
+# for an unknow reason, LC_CTYPE takes a weird value (fr_FR.UTF-8) on some VM
+# while there is no corresponding locale package installed, which leads to
+# various errors. We set here LC_CTYPE to the standard value.
 echo "LC_CTYPE=en_US.UTF-8" >> ~/.bashrc
 LC_CTYPE=en_US.UTF-8
-sudo apt-get -q install libxslt1-dev
 
+# install pycnik
+sudo apt-get -q install libxslt1-dev
 ~/.virtualenvs/tilestache/bin/pip install pycnik
 
 # install standard plugins for Mapnik
