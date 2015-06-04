@@ -61,7 +61,7 @@ def preview(request, name):
 
 def home(request):
     return render(
-        request, 'pycnikr/home.html',
+        request, 'pycnikr/index.html',
         {
             'style_sheets': get_py_style_sheets(),
         }
