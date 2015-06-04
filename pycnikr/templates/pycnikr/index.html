@@ -114,7 +114,7 @@
                             });
 
         var get_new_random_layer = function() {
-            var url = 'http://127.0.0.1:8081/{{ name }}/{z}/{x}/{y}.png';
+            var url = 'http://127.0.0.1:8081/{{ raw_name }}/{z}/{x}/{y}.png';
             url = url + '?refresh={random}';
             return new random_layer(url);
         }
