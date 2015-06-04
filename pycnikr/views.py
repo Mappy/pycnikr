@@ -28,7 +28,7 @@ def template(request, name):
     py_style_sheet = open(join(settings.PYCNIKR_STYLE_SHEETS_DIR, name), 'r')
     py_style_sheet_content = py_style_sheet.read()
     return render(
-        request, 'pycnikr/index.html',
+        request, 'pycnikr/template.html',
         {
             'style_sheets': py_style_sheets,
             'name': name,

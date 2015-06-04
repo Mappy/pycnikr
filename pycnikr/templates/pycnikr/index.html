@@ -1,226 +1,28 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <meta charset="utf-8" />
     <title>
-        Pycnikr
+        pycnikr home
     </title>
     <link rel="shortcut icon" href="../../static/favicon.ico">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-    <!-- Leaflet CSS -->
-    <link rel="stylesheet" href="../../static/leaflet-0.7.3/leaflet.css" />
-    <!-- Leaflet  zoomdisplay CSS -->
-    <link rel="stylesheet" href="../../static/leaflet.zoomdisplay/leaflet.zoomdisplay.css" />
-    <!-- Local CSS -->
-    <style type="text/css" media="screen">
-        body {
-            overflow: hidden;
-            margin: 10px;
-        }
-        .pycnikr {
-            margin-top:10px;
-            height: 700px;
-        }
-        ul {
-            list-style-type: none;
-        }
-       #error {
-           font-family: monospace;
-           white-space: pre;
-       }
-    </style>
-    <!-- jQuery JS  -->
-    <script src="https://code.jquery.com/jquery-2.1.4.js" type="text/javascript" charset="utf-8"></script>
-    <!-- Ace JS-->
-    <script src="../../static/ace-builds-master/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
-    <!-- Leaflet JS -->
-    <script src="../../static/leaflet-0.7.3/leaflet.js"></script>
-    <!-- Leaflet zoomdisplay JS -->
-    <script src="../../static/leaflet.zoomdisplay/leaflet.zoomdisplay.js"></script>
     <!-- Bootstrap JS -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 </head>
 <body>
+    <p class="bg-primary">
+        pycnikr is a tool to design Mapnik templates with the pycnik library. The availables templates are :
+    </p>
 
-    <div id="container">
-        <div class="row">
-            <div class="col-xs-6 col-md-6">
-              <div class="btn-group">
-                <button type="button" title="Select the template to edit" class="btn btn-info btn-lg">{{ name }}</button>
-                <button type="button" title="Select the template to edit" class="btn btn-info btn-lg dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                  <span class="caret"></span>
-                  <span class="sr-only">Toggle Dropdown</span>
-                </button>
-                <ul class="dropdown-menu" role="menu">
-                  <ul>
-                    {% for style_sheet in style_sheets %}
-                    <li><a href="{{ style_sheet }}">{{ style_sheet }}</a></li>
-                    {% endfor %}
-                  </ul>
-              </div>
-              <a id="reloadButton" title="Reload the template from the server in its original state" class="btn btn-info btn-lg">RELOAD</a>
-              <a id="saveButton" title="Save the modifications of the template on the server" class="btn btn-info btn-lg">SAVE</a>
-            </div>
-            <div class="col-xs-6 col-md-6">
-                <a id="previewButton" title="Generate map with the stylesheet as it is in the editor" class="btn btn-info btn-lg">PREVIEW</a>
-                <span class="alert alert-danger" role="alert">
-                  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                  <span class="sr-only">Error:</span>
-                  <span id="errorAbstract"></span>
-                </span>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-xs-6 col-md-6">
-                <!-- Code editor with Ace  -->
-                <pre id="editor" class="pycnikr">{{ style_sheet_content }}</pre>
-            </div>
-            <div class="col-xs-6 col-md-6">
-                <!-- Map with Leaflet  -->
-                <div id="map" class="pycnikr"></div>
-            </div>
-        </div>
-
-
-        <div class="row">
-            <div class="col-xs-12 col-md-12">
-                <div id="errorDetail" class="alert span5 alert-danger"></div>
-            </div>
-        </div>
-
-
+    <div class="btn-group-vertical" aria-label="Vertical button group" role="group">
+        {% for style_sheet in style_sheets %}
+            <button class="btn btn-default" type="button" onclick="window.location.href='{{ style_sheet }}'">
+                {{ style_sheet }}
+            </button>
+        {% endfor %}
     </div>
-
-    <script>
-        "use strict";
-
-        // This class contains in its options an item named 'random' which,
-        // when printed, generates a random integer.
-        // This item can then be used in the pattern of the URL of the layer.
-        // This item will normally be ignored by the server (at least, this is
-        // the case for TileStache) and it will cheat leaflet, which otherwise,
-        // would use its own cache, which is different of the cache of the
-        // browser.
-        var random_layer = L.TileLayer.extend({
-                                options: {
-                                    random: {
-                                        toString:function() {
-                                            return Math.random();
-                                        }
-                                    }
-                                }
-                            });
-
-        var get_new_random_layer = function() {
-            var url = 'http://127.0.0.1:8081/{{ raw_name }}/{z}/{x}/{y}.png';
-            url = url + '?refresh={random}';
-            return new random_layer(url);
-        }
-
-        function getCookie(name) {
-            var cookieValue = null;
-            if (document.cookie && document.cookie != '') {
-                var cookies = document.cookie.split(';');
-                for (var i = 0; i < cookies.length; i++) {
-                    var cookie = jQuery.trim(cookies[i]);
-                    // Check if the cookie string begins with the right name
-                    if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                        cookieValue = cookie.substring(name.length + 1)
-                        cookieValue = decodeURIComponent(cookieValue);
-                        break;
-                    }
-                }
-            }
-            return cookieValue;
-        }
-
-        function csrfSafeMethod(method) {
-            // these HTTP methods do not require CSRF protection
-            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-        }
-
-        function ajaxSetup() {
-            $.ajaxSetup({
-                beforeSend: function(xhr, settings) {
-                    var csrftoken = getCookie('csrftoken');
-                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
-                    }
-                }
-            });
-        }
-
-        function aceEditor() {
-            var editor = ace.edit("editor");
-            editor.setTheme("ace/theme/twilight");
-            editor.getSession().setMode("ace/mode/python");
-            return editor;
-        }
-
-        function buttonClick(editor, map, layer) {
-            $("#previewButton").click( function() {
-            var url = "preview/{{ name }}";
-            var body = editor.getValue();
-            $.post(url, body).done(
-                function() {
-                    if (layer !== undefined) {
-                        map.removeLayer(layer);
-                    }
-                    layer = get_new_random_layer();
-                    layer.addTo(map);
-                    $(".alert").hide();
-                }).fail(
-                function(xhr) {
-                    if (layer !== undefined) {
-                            map.removeLayer(layer);
-                    }
-                    var errorAbstract;
-                    if (!xhr.readyState) {
-                        errorAbstract = "SERVER UNREACHABLE";
-                    }
-                    else {
-                        errorAbstract = /.*\n(.*)\n\n(Request Method: POST)/.exec(xhr.responseText)[1];
-
-                        errorDetail = /[\s\S]*(Traceback:[\s\S]*)Exception Type/.exec(xhr.responseText)[1];
-
-                        console.log(errorDetail)
-                        $("#errorDetail").text(errorDetail);
-                    }
-                    $(".alert").show();
-                    $("#errorAbstract").text(errorAbstract);
-                });
-            });
-
-            $("#saveButton").click( function() {
-                var url = "save/{{ name }}";
-                var body = editor.getValue();
-                $.post(url, body,
-                    function(result) {
-                        console.log('Editor content saved on the server');
-                    });
-            });
-
-            $("#reloadButton").click( function() {
-                window.location.reload();
-            });
-        }
-
-
-
-
-        $(document).ready(function() {
-            ajaxSetup();
-            var editor = aceEditor();
-            var map = L.map('map').setView({{ center }}, {{ zoom }});
-            var layer = undefined;
-            buttonClick(editor, map, layer);
-            $("#previewButton").trigger('click');
-
-        });
-
-    </script>
 
 </body>
 </html>
