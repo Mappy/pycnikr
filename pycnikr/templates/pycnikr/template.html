@@ -20,12 +20,12 @@
         }
         .pycnikr {
             margin-top:10px;
-            height: 700px;
+            height: 600px;
         }
         ul {
             list-style-type: none;
         }
-       #error {
+       #errorDetail {
            font-family: monospace;
            white-space: pre;
        }
@@ -181,10 +181,8 @@
                             errorAbstract = "SERVER UNREACHABLE";
                         }
                         else {
-                            errorAbstract = /.*\n(.*)\n\n(Request Method: POST)/.exec(xhr.responseText)[1];
-
-                            errorDetail = /[\s\S]*(Traceback:[\s\S]*)Exception Type/.exec(xhr.responseText)[1];
-
+                            errorAbstract = /.*\n(.*)\n\nRequest Method: POST/.exec(xhr.responseText)[1];
+                            var errorDetail = /[\s\S]*(Traceback:[\s\S]*)Request information/.exec(xhr.responseText)[1];
                             $("#errorDetail").text(errorDetail);
                         }
                         $(".alert").show();
