@@ -113,3 +113,13 @@ PYCNIKR_STYLE_SHEETS_DIR = os.path.join(BASE_DIR, 'pycnikr', 'style_sheets')
 # Directory where Python style sheets are copied and XML style sheets are
 # generated
 PYCNIKR_TMP_STYLE_SHEETS_DIR = '/tmp'
+# If PYCNIKR_TILE_SERVER_URL = {'left': 'left/',
+#                               'center': '/center/',
+#                               'right': '.png',
+#                               }
+# the URL of the tile {z}/{x}/{y} for the template 'template_name' is
+# 'left/template_name/center/{z}/{x}/{y}.png
+PYCNIKR_TILE_SERVER_URL = {'left': 'http://127.0.0.1:8081/',
+                           'center': '/',
+                           'right': '.png',
+                           }

@@ -30,6 +30,7 @@ def template(request, name):
     return render(
         request, 'pycnikr/template.html',
         {
+            'tile_server_url': settings.PYCNIKR_TILE_SERVER_URL,
             'style_sheets': py_style_sheets,
             'name': name,
             'raw_name': get_raw_name(name),
