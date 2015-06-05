@@ -1,1 +1,7 @@
-"${EDITOR:-vim}" /srv/pycnikr/django_pycnikr/settings.py
+#! /usr/bin/env python
+import os
+import subprocess
+root_dir = os.path.dirname(os.path.dirname(__file__))
+settings_dot_py = os.path.join(root_dir, 'django_pycnikr', 'settings.py')
+p = subprocess.Popen('${EDITOR:-vim} ' + settings_dot_py, shell=True)
+p.wait()

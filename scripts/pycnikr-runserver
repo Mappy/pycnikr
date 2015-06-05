@@ -1,7 +1,12 @@
-cd /srv/pycnikr
+#! /usr/bin/env python
+import os
+import subprocess
+root_dir = os.path.dirname(os.path.dirname(__file__))
+manage_dot_py = os.path.join(root_dir, 'manage.py')
 # The --noreload option is necessary because of the handling of the TileStache
 # server. Without this option, because we use 'manage.py runserver' and not
 # wsgi.py, some initialisation tasks are done twice by Django. More
 # specifically, the server TileStache is run twice which leads to an error the
 # second time.
-python manage.py runserver 0.0.0.0:8000 --noreload
+p = subprocess.Popen([manage_dot_py, 'runserver', '0.0.0.0:8000', '--noreload'])
+p.wait()
