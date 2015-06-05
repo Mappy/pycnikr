@@ -161,35 +161,34 @@
 
         function buttonClick(editor, map, layer) {
             $("#previewButton").click( function() {
-            var url = "preview/{{ name }}";
-            var body = editor.getValue();
-            $.post(url, body).done(
-                function() {
-                    if (layer !== undefined) {
-                        map.removeLayer(layer);
-                    }
-                    layer = get_new_random_layer();
-                    layer.addTo(map);
-                    $(".alert").hide();
-                }).fail(
-                function(xhr) {
-                    if (layer !== undefined) {
+                var url = "preview/{{ name }}";
+                var body = editor.getValue();
+                $.post(url, body).done(
+                    function() {
+                        if (layer !== undefined) {
                             map.removeLayer(layer);
-                    }
-                    var errorAbstract;
-                    if (!xhr.readyState) {
-                        errorAbstract = "SERVER UNREACHABLE";
-                    }
-                    else {
-                        errorAbstract = /.*\n(.*)\n\n(Request Method: POST)/.exec(xhr.responseText)[1];
+                        }
+                        layer = get_new_random_layer();
+                        layer.addTo(map);
+                        $(".alert").hide();
+                    }).fail(
+                    function(xhr) {
+                        if (layer !== undefined) {
+                                map.removeLayer(layer);
+                        }
+                        var errorAbstract;
+                        if (!xhr.readyState) {
+                            errorAbstract = "SERVER UNREACHABLE";
+                        }
+                        else {
+                            errorAbstract = /.*\n(.*)\n\n(Request Method: POST)/.exec(xhr.responseText)[1];
 
-                        errorDetail = /[\s\S]*(Traceback:[\s\S]*)Exception Type/.exec(xhr.responseText)[1];
+                            errorDetail = /[\s\S]*(Traceback:[\s\S]*)Exception Type/.exec(xhr.responseText)[1];
 
-                        console.log(errorDetail)
-                        $("#errorDetail").text(errorDetail);
-                    }
-                    $(".alert").show();
-                    $("#errorAbstract").text(errorAbstract);
+                            $("#errorDetail").text(errorDetail);
+                        }
+                        $(".alert").show();
+                        $("#errorAbstract").text(errorAbstract);
                 });
             });
 
@@ -206,9 +205,6 @@
                 window.location.reload();
             });
         }
-
-
-
 
         $(document).ready(function() {
             ajaxSetup();
