@@ -66,11 +66,6 @@
             </div>
             <div class="col-xs-6 col-md-6">
                 <a id="previewButton" title="Generate map with the stylesheet as it is in the editor" class="btn btn-info btn-lg">PREVIEW</a>
-                <span class="alert alert-danger" role="alert">
-                  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                  <span class="sr-only">Error:</span>
-                  <span id="errorAbstract"></span>
-                </span>
             </div>
         </div>
 
@@ -161,6 +156,18 @@
             return editor;
         }
 
+        function handleError(xhr) {
+            var errorDetail;
+            if (!xhr.readyState) {
+                errorDetail = "SERVER UNREACHABLE";
+            }
+            else {
+                errorDetail = /[\s\S]*(Traceback:[\s\S]*)Request information/.exec(xhr.responseText)[1];
+            }
+            $("#errorDetail").text(errorDetail);
+            $(".alert").show();
+        }
+
         function buttonClick(editor, map, layer) {
             $("#previewButton").click( function() {
                 var url = "preview/{{ name }}";
@@ -176,29 +183,19 @@
                     }).fail(
                     function(xhr) {
                         if (layer !== undefined) {
-                                map.removeLayer(layer);
+                            map.removeLayer(layer);
                         }
-                        var errorAbstract;
-                        if (!xhr.readyState) {
-                            errorAbstract = "SERVER UNREACHABLE";
-                        }
-                        else {
-                            errorAbstract = /.*\n(.*)\n\nRequest Method: POST/.exec(xhr.responseText)[1];
-                            var errorDetail = /[\s\S]*(Traceback:[\s\S]*)Request information/.exec(xhr.responseText)[1];
-                            $("#errorDetail").text(errorDetail);
-                        }
-                        $(".alert").show();
-                        $("#errorAbstract").text(errorAbstract);
+                        handleError(xhr);
                 });
             });
 
             $("#saveButton").click( function() {
                 var url = "save/{{ name }}";
                 var body = editor.getValue();
-                $.post(url, body,
+                $.post(url, body).done(
                     function(result) {
-                        console.log('Editor content saved on the server');
-                    });
+                        $(".alert").hide()
+                    }).fail(handleError);
             });
 
             $("#reloadButton").click( function() {
