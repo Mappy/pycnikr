@@ -38,6 +38,8 @@
     <script src="../../static/leaflet-0.7.3/leaflet.js"></script>
     <!-- Leaflet zoomdisplay JS -->
     <script src="../../static/leaflet.zoomdisplay/leaflet.zoomdisplay.js"></script>
+    <!-- Leaflet zoomdisplay JS -->
+    <script src="../../static/leaflet-hash.js"></script>
     <!-- Bootstrap JS -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 </head>
@@ -208,6 +210,7 @@
             ajaxSetup();
             var editor = aceEditor();
             var map = L.map('map').setView({{ center }}, {{ zoom }});
+            var hash = new L.Hash(map);
             var layer = undefined;
             buttonClick(editor, map, layer);
             $("#previewButton").trigger('click');
