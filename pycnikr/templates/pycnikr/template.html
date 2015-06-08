@@ -112,7 +112,7 @@
                             });
 
         var get_new_random_layer = function() {
-            var url = '{{ tile_server_url.left }}{{ raw_name }}{{ tile_server_url.center }}{z}/{x}/{y}{{ tile_server_url.right }}';
+            var url = '{{ tile_server_url.left }}{{ name }}{{ tile_server_url.center }}{z}/{x}/{y}{{ tile_server_url.right }}';
             url = url + '?refresh={random}';
             return new random_layer(url);
         }

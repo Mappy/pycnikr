@@ -103,22 +103,30 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-# Zoom used to display the map when loading the template
+# Zoom used when displaying the map
 PYCNIKR_DEFAULT_ZOOM = 5
-# Coordinates of the center of the map when loading the template
+# Coordinates of the center of the map when displaying the map
 PYCNIKR_DEFAULT_CENTER_LAT = 48.8534100
 PYCNIKR_DEFAULT_CENTER_LON = 2.3488000
-# Directory containing the style sheets
-PYCNIKR_STYLE_SHEETS_DIR = os.path.join(BASE_DIR, 'pycnikr', 'style_sheets')
-# Directory where Python style sheets are copied and XML style sheets are
-# generated
-PYCNIKR_TMP_STYLE_SHEETS_DIR = '/tmp'
+# The key is the style sheet name used in the URL
+# The first element of the value is the source file of the Python style sheet
+# The second element of the value is the destination file of the XML style sheet
+PYCNIKR_STYLE_SHEETS_MAPPING = \
+    {'example':
+         (os.path.join(BASE_DIR, 'pycnikr', 'style_sheets', 'example.py'),
+          '/tmp/example.xml'
+          ),
+     'example2':
+         (os.path.join(BASE_DIR, 'pycnikr', 'style_sheets', 'example2.py'),
+          '/tmp/example2.xml'
+          ),
+     }
 # If PYCNIKR_TILE_SERVER_URL = {'left': 'left/',
 #                               'center': '/center/',
 #                               'right': '.png',
 #                               }
-# the URL of the tile {z}/{x}/{y} for the template 'template_name' is
-# 'left/template_name/center/{z}/{x}/{y}.png
+# the URL of the tile {z}/{x}/{y} for the style sheet 'name' is
+# 'left/name/center/{z}/{x}/{y}.png
 PYCNIKR_TILE_SERVER_URL = {'left': 'http://127.0.0.1:8081/',
                            'center': '/',
                            'right': '.png',

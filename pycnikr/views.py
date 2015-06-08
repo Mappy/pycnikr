@@ -11,53 +11,45 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 
 from pycnik import pycnik
 
+def get_py_style_sheet_path(name):
+    return settings.PYCNIKR_STYLE_SHEETS_MAPPING[name][0]
+
+def get_xml_style_sheet_path(name):
+    return settings.PYCNIKR_STYLE_SHEETS_MAPPING[name][1]
+
 def get_py_style_sheets():
-    return filter(lambda file_name: file_name.endswith('.py'),
-                  listdir(settings.PYCNIKR_STYLE_SHEETS_DIR))
-
-def get_normalized_name(name):
-    return name if name.endswith('.py') else name + '.py'
-
-def get_raw_name(name):
-    return splitext(name)[0]
+    return settings.PYCNIKR_STYLE_SHEETS_MAPPING.keys()
 
 @ensure_csrf_cookie
 def template(request, name):
-    name = get_normalized_name(name)
     py_style_sheets = filter(lambda x: x != name, get_py_style_sheets())
-    py_style_sheet = open(join(settings.PYCNIKR_STYLE_SHEETS_DIR, name), 'r')
-    py_style_sheet_content = py_style_sheet.read()
+    with open(get_py_style_sheet_path(name), 'r') as fd:
+        py_style_sheet_content = fd.read()
     return render(
         request, 'pycnikr/template.html',
         {
             'tile_server_url': settings.PYCNIKR_TILE_SERVER_URL,
             'style_sheets': py_style_sheets,
             'name': name,
-            'raw_name': get_raw_name(name),
             'style_sheet_content': py_style_sheet_content,
             'zoom': settings.PYCNIKR_DEFAULT_ZOOM,
             'center':[settings.PYCNIKR_DEFAULT_CENTER_LAT,
                       settings.PYCNIKR_DEFAULT_CENTER_LON],
-        }
-    )
+            }
+        )
 
 def save(request, name):
-    name = get_normalized_name(name)
-    py_style_sheets_dir = settings.PYCNIKR_STYLE_SHEETS_DIR
-    style_sheet_to_save = join(py_style_sheets_dir, name)
-    with open(style_sheet_to_save, 'w') as fd:
+    with open(get_py_style_sheet_path(name), 'w') as fd:
         fd.write(request.body)
     return HttpResponse('Style sheet successfully saved')
 
 def preview(request, name):
-    name = get_normalized_name(name)
-    tmp_dir = settings.PYCNIKR_TMP_STYLE_SHEETS_DIR
-    py_style_sheet_path = join(tmp_dir, name)
-    with open(py_style_sheet_path, 'w') as f:
-       f.write(request.body)
+    xml_style_sheet_path = get_xml_style_sheet_path(name)
+    py_style_sheet_path = splitext(xml_style_sheet_path)[0] + '.py'
+    with open(py_style_sheet_path, 'w') as fd:
+       fd.write(request.body)
     py_style_sheet = pycnik.import_style(py_style_sheet_path)
-    raw_name = get_raw_name(name)
-    pycnik.translate(py_style_sheet, join(tmp_dir, raw_name + '.xml'))
+    pycnik.translate(py_style_sheet, get_xml_style_sheet_path(name))
     return HttpResponse('Style sheet successfully applied')
 
 def home(request):
