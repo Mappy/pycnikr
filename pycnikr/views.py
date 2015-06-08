@@ -8,6 +8,7 @@ from django.conf import settings
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import ensure_csrf_cookie
+from django.views.decorators.http import require_GET, require_POST
 
 from pycnik import pycnik
 
@@ -20,6 +21,7 @@ def get_xml_style_sheet_path(name):
 def get_py_style_sheets():
     return settings.PYCNIKR_STYLE_SHEETS_MAPPING.keys()
 
+@require_GET
 @ensure_csrf_cookie
 def template(request, name):
     py_style_sheets = filter(lambda x: x != name, get_py_style_sheets())
@@ -37,12 +39,13 @@ def template(request, name):
                       settings.PYCNIKR_DEFAULT_CENTER_LON],
             }
         )
-
+@require_POST
 def save(request, name):
     with open(get_py_style_sheet_path(name), 'w') as fd:
         fd.write(request.body)
     return HttpResponse('Style sheet successfully saved')
 
+@require_POST
 def preview(request, name):
     xml_style_sheet_path = get_xml_style_sheet_path(name)
     py_style_sheet_path = splitext(xml_style_sheet_path)[0] + '.py'
@@ -52,6 +55,7 @@ def preview(request, name):
     pycnik.translate(py_style_sheet, get_xml_style_sheet_path(name))
     return HttpResponse('Style sheet successfully applied')
 
+@require_GET
 def home(request):
     return render(
         request, 'pycnikr/index.html',
