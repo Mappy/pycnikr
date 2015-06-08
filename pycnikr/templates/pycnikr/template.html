@@ -106,9 +106,7 @@
         var random_layer = L.TileLayer.extend({
                                 options: {
                                     random: {
-                                        toString:function() {
-                                            return Math.random();
-                                        }
+                                        toString: Math.random,
                                     }
                                 }
                             });
@@ -214,7 +212,6 @@
             var layer = undefined;
             buttonClick(editor, map, layer);
             $("#previewButton").trigger('click');
-
         });
 
     </script>
