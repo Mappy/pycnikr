@@ -15,27 +15,27 @@ below.
     geo_data_source [shape=note, label="Geographical data source\\n(Shape file, PostGIS, etc.)"];
     mapnik_templates [shape=note, label="Mapnik templates (XML)"];
     mapnik[label="Mapnik 2.1"];
-    pycnik_lib[label="Pycnik library"];
-    pycnik_scripts[label="Pycnik scripts"];
+    pycnik_lib[label="pycnik library"];
+    pycnik_scripts[label="pycnik scripts"];
     tile_server[label="Tile server\\n(mod_tile, TileCache, TileStache, etc.)"];
     django[label="Django"];
     javascripts[shape=note, label="Third-parties Javascript files\\n(ace.js, leaflet.js, etc.)"];
     html[shape=note, label="Other static files\\n(HTML, CSS, PNG, etc.)"];
     browser[label="Web browser\\n(Chrome, Firefox, etc.)"];
-    mapnik -> geo_data_source;
-    mapnik -> mapnik_templates;
-    pycnik_lib -> mapnik_templates;
-    pycnik_scripts -> pycnik_lib;
-    django -> pycnik_scripts;
+    mapnik -> geo_data_source[label="read"];
+    mapnik -> mapnik_templates[label="read"];
+    pycnik_lib -> mapnik_templates[label="write"];
+    pycnik_scripts -> pycnik_lib[label="call"];
+    django -> pycnik_scripts[label="write/call"];
     django -> tile_server[label="start/stop"];
     subgraph cluster {
         label="pycnikr"
         django -> javascripts;
         django -> html;
     }
-    browser -> django;
-    browser -> tile_server;
-    tile_server -> mapnik;
+    browser -> django[label="pycnik scripts",dir="both",fontcolor="red"];
+    browser -> tile_server[label="tiles",dir="both", fontcolor="red"];
+    tile_server -> mapnik[label="tiles",dir="both", fontcolor="red"];
   }
 )
 
