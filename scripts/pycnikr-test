@@ -1,0 +1,19 @@
+#! /bin/sh
+
+# This script must be run from inside the Vagrant VM
+
+# We go to the root directory
+cd $(dirname $(dirname $0))
+
+# Unit tests of the packages used by pycnikr
+cd tests
+nosetests -v
+
+# Functional tests of pycnikr
+cd ..
+# We need to remove tilestache from the applications. Otherwise, for an unknown
+# reason, Django tries to start twice the TileStache server and, obviously,
+# fails.
+cp django_pycnikr/settings.py pycnikr/test_settings.py
+sed -e "s/'tilestache',//" -i pycnikr/test_settings.py
+python manage.py test --settings="pycnikr.test_settings"
