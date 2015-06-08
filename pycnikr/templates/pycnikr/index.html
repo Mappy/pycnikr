@@ -1,28 +1,52 @@
+{% load staticfiles %}
+
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <title>
-        pycnikr home
+        pycnikr
     </title>
-    <link rel="shortcut icon" href="../../static/favicon.ico">
+    <link rel="shortcut icon" href="{% static 'static/favicon.ico' %}">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <style type="text/css">
+        .jumbotron{
+            background:#D7DEE1;
+            padding-left: 50px;
+        }
+        .btn{
+            width:100%;
+        }
+        .btn:hover {
+            transition-duration: 0.35s;
+        }
+    </style>
     <!-- Bootstrap JS -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 </head>
 <body>
-    <p class="bg-primary">
-        pycnikr is a tool to design Mapnik templates with the pycnik library. The availables templates are :
-    </p>
-
-    <div class="btn-group-vertical" aria-label="Vertical button group" role="group">
-        {% for style_sheet in style_sheets %}
-            <button class="btn btn-default" type="button" onclick="window.location.href='{{ style_sheet }}'">
-                {{ style_sheet }}
-            </button>
-        {% endfor %}
+    <a href="https://github.com/Mappy/pycnikr"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/e7bbb0521b397edbd5fe43e7f760759336b5e05f/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677265656e5f3030373230302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png"></a>
+    <div class="jumbotron">
+        <div class="">
+            <h1>pycnikr</h1>
+            <p>A tool to design <a href="http://mapnik.org/">Mapnik</a> style sheets based on the <a href="https://github.com/Mappy/pycnik/">pycnik</a> library</p>
+        </div>
     </div>
-
+    <div class="container">
+        {% for style_sheet in style_sheets %}
+        <p>
+        <div class="row row-centered">
+            <div class="col-xs-4 col-centered"></div>
+            <div class="col-xs-4 col-centered">
+                <a class="btnfoo btn btn-info btn-lg" onclick="window.location.href='{{ style_sheet }}'">
+                {{ style_sheet }}
+                </a>
+            </div>
+            <div class="col-xs-4 col-centered"></div>
+        </div>
+        {% endfor %}
+        </p>
+    </div>
 </body>
 </html>
