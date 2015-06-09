@@ -17,7 +17,7 @@ below.
     mapnik[label="Mapnik 2.1"];
     pycnik_lib[label="pycnik library"];
     pycnik_scripts[label="pycnik scripts"];
-    tile_server[label="Tile server\\n(mod_tile, TileCache, TileStache, etc.)"];
+    tile_server[label="Tile server\\n(TileStache, TileCache, mod_tile, etc.)"];
     django[label="Django"];
     javascripts[shape=note, label="Third-parties Javascript files\\n(ace.js, leaflet.js, etc.)"];
     html[shape=note, label="Other static files\\n(HTML, CSS, PNG, etc.)"];
@@ -26,7 +26,7 @@ below.
     mapnik -> mapnik_templates[label="read"];
     pycnik_lib -> mapnik_templates[label="write"];
     pycnik_scripts -> pycnik_lib[label="call"];
-    django -> pycnik_scripts[label="write/call"];
+    django -> pycnik_scripts[label="read/write/call"];
     django -> tile_server[label="start/stop"];
     subgraph cluster {
         label="pycnikr"
