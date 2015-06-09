@@ -1,7 +1,0 @@
-#! /usr/bin/env python
-import os
-import subprocess
-root_dir = os.path.dirname(os.path.dirname(__file__))
-tilestache_cfg = os.path.join(root_dir, 'tilestache', 'tilestache.cfg')
-p = subprocess.Popen('${EDITOR:-vim} ' + tilestache_cfg, shell=True)
-p.wait()

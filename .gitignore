@@ -5,3 +5,4 @@
 # to let the user override the default settings
 django_pycnikr/*_settings.py
 pycnikr/test_settings.py
+tilestache/tilestache.cfg

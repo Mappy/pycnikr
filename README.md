@@ -75,9 +75,7 @@ and a tile on the right side.
 
 # Configuration
 
-## Configure pycnikr
-
-To edit the settings of the Django server:
+To edit the settings of **pycnikr**:
 
     vagrant ssh
     pycnikr-config
@@ -86,19 +84,6 @@ The settings to be configured are all prefixed by **PYCNIKR_**.
 
 The meaning of the different parameters is detailed in the comments inside the
 file *settings.py*.
-
-## Configure TileStache
-
-To edit the settings of **TileStache**:
-
-    vagrant ssh
-    pycnikr-config-tilestache
-
-For each style sheet (say *style\_sheet.py*) contained in directory identified by the Django setting **PYCNIKR_STYLE_SHEETS_DIR**:
-* There must be a layer configured in **TileStache**
-* This layer must contain a **mapfile** parameter, which contains the path of an XML file
-* The directory of this file must be the same as the Django setting **PYCNIKR_TMP_STYLE_SHEETS_DIR**
-* The name of the file must be the same as the one of the style sheet (i.e. *style\_sheet.xml* in our example).
 
 # Replacement of TileStache by another tile server
 
