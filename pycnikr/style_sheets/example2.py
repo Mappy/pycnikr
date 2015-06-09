@@ -1,5 +1,5 @@
 """
-This file is a python stylesheet which describes layers and styles for Mapnik.
+This file is a python style sheet which describes layers and styles for Mapnik.
 Describe layers and styles by this way is simple and easy-readable
 It is not usable by Mapnik directly, you have to translate it with Pycnik, if
 you want to try execute pycnik_sample.py

@@ -23,12 +23,12 @@ def get_py_style_sheets():
 
 @require_GET
 @ensure_csrf_cookie
-def template(request, name):
+def edit(request, name):
     py_style_sheets = filter(lambda x: x != name, get_py_style_sheets())
     with open(get_py_style_sheet_path(name), 'r') as fd:
         py_style_sheet_content = fd.read()
     return render(
-        request, 'pycnikr/template.html',
+        request, 'pycnikr/edit.html',
         {
             'tile_server_url': settings.PYCNIKR_TILE_SERVER_URL,
             'style_sheets': py_style_sheets,

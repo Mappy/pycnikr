@@ -1,6 +1,6 @@
 """
 This test illustrates how to create a tile with the TileStache library.
-It uses the Mapnik engine and a Mapnik XML template.
+It uses the Mapnik engine and a Mapnik XML style sheet.
 """
 
 import os
@@ -22,7 +22,7 @@ class TestTileStacheLib(artefact.TestCaseWithArtefacts):
 
     def test_tilestache_lib(self):
         config = eval(open(get_tilestache_file('tilestache.cfg')).read())
-        config["layers"]["example"]["provider"]["mapfile"] = "stylesheet.xml"
+        config["layers"]["example"]["provider"]["mapfile"] = "style_sheet.xml"
         # like http://tile.openstreetmap.org/1/0/0.png
         coord = ModestMaps.Core.Coordinate(0, 0, 0)
         config = TileStache.Config.buildConfiguration(config)

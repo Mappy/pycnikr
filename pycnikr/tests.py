@@ -9,7 +9,7 @@ class PycnikrTests(TestCase):
         self.assertIn('example', response.content)
         self.assertIn('example2', response.content)
 
-    def test_template(self):
+    def test_edit(self):
         response = self.client.get('/example')
         self.assertIn('container', response.content)
 
