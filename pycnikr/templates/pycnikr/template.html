@@ -15,7 +15,7 @@
     <!-- Leaflet  zoomdisplay CSS -->
     <link rel="stylesheet" href="{% static 'leaflet.zoomdisplay/leaflet.zoomdisplay.css' %}" />
     <!-- Local CSS -->
-    <style type="text/css" media="screen">
+    <style type="text/css">
         body {
             margin: 10px;
         }
@@ -26,12 +26,12 @@
         ul {
             list-style-type: none;
         }
-       #errorDetail {
-           height: 250px;
-           overflow: auto;
-           font-family: monospace;
-           white-space: pre;
-       }
+        #errorDetail {
+            height: 250px;
+            overflow: auto;
+            font-family: monospace;
+            white-space: pre;
+        }
     </style>
     <!-- jQuery JS  -->
     <script src="https://code.jquery.com/jquery-2.1.4.js" type="text/javascript" charset="utf-8"></script>
@@ -146,7 +146,7 @@
                     if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
                         xhr.setRequestHeader("X-CSRFToken", csrftoken);
                     }
-                }
+                },
             });
         }
 
