@@ -10,6 +10,14 @@ if [ -f ~/.bootstrap_complete ]; then
     exit 0
 fi
 
+# For an unknow reason, LC_CTYPE takes a weird value (fr_FR.UTF-8) on some VM
+# while there is no corresponding locale package installed, which leads to
+# various errors.
+# We set here LANG, and therefore the other variables, including LC_CTYPE to
+# the standard value.
+sudo update-locale LANG=en_US.UTF-8
+source /etc/default/locale
+
 set -x
 
 whoami
@@ -65,12 +73,6 @@ echo "
 # install TileStache
 ~/.virtualenvs/tilestache/bin/pip install TileStache
 
-# for an unknow reason, LC_CTYPE takes a weird value (fr_FR.UTF-8) on some VM
-# while there is no corresponding locale package installed, which leads to
-# various errors. We set here LC_CTYPE to the standard value.
-echo "LC_CTYPE=en_US.UTF-8" >> ~/.bashrc
-LC_CTYPE=en_US.UTF-8
-
 # install pycnik
 sudo apt-get -q install libxslt1-dev
 ~/.virtualenvs/tilestache/bin/pip install pycnik
@@ -84,7 +86,7 @@ sudo apt-get install mapnik-input-plugin-postgis # for PostGIS
 ~/.virtualenvs/tilestache/bin/pip install requests
 
 # Make sure the scripts are the in the PATH
-echo "PATH=/srv/pycnikr/scripts:$PATH" >> ~/.bashrc
+echo "PATH=/srv/pycnikr/scripts:\$PATH" >> ~/.bashrc
 
 # we did it. let's mark the script as complete
 touch ~/.bootstrap_complete
