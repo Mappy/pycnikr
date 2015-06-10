@@ -131,3 +131,6 @@ PYCNIKR_TILE_SERVER_URL = {'left': 'http://127.0.0.1:8081/',
                            'center': '/',
                            'right': '.png',
                            }
+# This callback is called when the user previews the map
+# This is the place to indicate to the tile server to refresh its style sheets
+PYCNIKR_PREVIEW_CALLBACK = lambda : None

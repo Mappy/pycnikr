@@ -53,6 +53,7 @@ def preview(request, name):
        fd.write(request.body)
     py_style_sheet = pycnik.import_style(py_style_sheet_path)
     pycnik.translate(py_style_sheet, get_xml_style_sheet_path(name))
+    settings.PYCNIKR_PREVIEW_CALLBACK()
     return HttpResponse('Style sheet successfully applied')
 
 @require_GET
