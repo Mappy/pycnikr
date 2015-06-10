@@ -13,10 +13,9 @@ fi
 # For an unknow reason, LC_CTYPE takes a weird value (fr_FR.UTF-8) on some VM
 # while there is no corresponding locale package installed, which leads to
 # various errors.
-# We set here LANG, and therefore the other variables, including LC_CTYPE to
-# the standard value.
-sudo update-locale LANG=en_US.UTF-8
-source /etc/default/locale
+# We set here LC_CTYPE to the standard value.
+echo "export LC_CTYPE=en_US.UTF-8" >> ~/.bashrc
+export LC_CTYPE=en_US.UTF-8
 
 set -x
 
