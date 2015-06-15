@@ -18,6 +18,9 @@ def get_py_style_sheet_path(name):
 def get_xml_style_sheet_path(name):
     return settings.PYCNIKR_STYLE_SHEETS_MAPPING[name][1]
 
+def get_base_layers(name):
+    return settings.PYCNIKR_STYLE_SHEETS_MAPPING[name][2]
+
 def get_py_style_sheets():
     return settings.PYCNIKR_STYLE_SHEETS_MAPPING.keys()
 
@@ -30,6 +33,7 @@ def edit(request, name):
     return render(
         request, 'pycnikr/edit.html',
         {
+            'base_layers': get_base_layers(name),
             'tile_server_url': settings.PYCNIKR_TILE_SERVER_URL,
             'style_sheets': py_style_sheets,
             'name': name,

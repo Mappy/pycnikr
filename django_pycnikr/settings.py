@@ -122,10 +122,12 @@ PYCNIKR_STYLE_SHEETS_MAPPING = \
     {'example':
          (os.path.join(BASE_DIR, 'pycnikr', 'style_sheets', 'example.py'),
           '/tmp/example.xml',
+          [],
           ),
      'example2':
          (os.path.join(BASE_DIR, 'pycnikr', 'style_sheets', 'example2.py'),
           '/tmp/example2.xml',
+          [],
           ),
      }
 

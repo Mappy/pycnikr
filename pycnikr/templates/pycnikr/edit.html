@@ -39,11 +39,17 @@
            background-color: #5bc0de;
            border-color: #46b8da;
         }
+        .leaflet-control-layers-separator {
+           display: none;
+        }
+        .leaflet-control-layers-overlays {
+           display: none;
+        }
     </style>
     <!-- jQuery JS  -->
-    <script src="https://code.jquery.com/jquery-2.1.4.js" type="text/javascript" charset="utf-8"></script>
+    <script src="https://code.jquery.com/jquery-2.1.4.js"></script>
     <!-- Ace JS-->
-    <script src="{% static 'ace-builds-master/src-noconflict/ace.js' %}" type="text/javascript" charset="utf-8"></script>
+    <script src="{% static 'ace-builds-master/src-noconflict/ace.js' %}"></script>
     <!-- Leaflet JS -->
     <script src="{% static 'leaflet-0.7.3/leaflet.js' %}"></script>
     <!-- Leaflet zoomdisplay JS -->
@@ -52,6 +58,8 @@
     <script src="{% static 'leaflet-hash.js' %}"></script>
     <!-- Bootstrap JS -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <!-- Active layers JS -->
+    <script src="{% static 'ActiveLayers.js' %}"></script>
 </head>
 <body>
 
@@ -117,8 +125,8 @@
                                 }
                             });
 
-        var get_new_random_layer = function() {
-            var url = '{{ tile_server_url.left }}{{ name }}{{ tile_server_url.center }}{z}/{x}/{y}{{ tile_server_url.right }}';
+        function get_layer(name) {
+            var url = '{{ tile_server_url.left }}' + name + '{{ tile_server_url.center }}{z}/{x}/{y}{{ tile_server_url.right}}';
             url = url + '?refresh={random}';
             return new random_layer(url);
         }
@@ -175,23 +183,19 @@
             $(".alert").show();
         }
 
-        function buttonClick(editor, map, layer) {
+        function buttonsSetup(editor, map, edited_layer) {
             $("#previewButton").click( function() {
                 var url = "preview/{{ name }}";
                 var body = editor.getValue();
                 $.post(url, body).done(
                     function() {
-                        if (layer !== undefined) {
-                            map.removeLayer(layer);
-                        }
-                        layer = get_new_random_layer();
-                        layer.addTo(map);
+                        map.removeLayer(edited_layer);
+                        edited_layer = get_layer('{{ name }}');
+                        map.addLayer(edited_layer);
                         $(".alert").hide();
                     }).fail(
                     function(xhr) {
-                        if (layer !== undefined) {
-                            map.removeLayer(layer);
-                        }
+                        map.removeLayer(edited_layer);
                         handleError(xhr);
                 });
             });
@@ -215,9 +219,39 @@
             var editor = aceEditor();
             var map = L.map('map').setView({{ center }}, {{ zoom }});
             var hash = new L.Hash(map);
-            var layer = undefined;
-            buttonClick(editor, map, layer);
-            $("#previewButton").trigger('click');
+
+            var edited_layer = get_layer('{{ name }}');
+            map.addLayer(edited_layer);
+            $(".alert").hide();
+
+            buttonsSetup(editor, map, edited_layer);
+
+            {% if base_layers %}
+                {% for base_layer in base_layers %}
+                var {{ base_layer }} = get_layer('{{ base_layer }}');
+                {% endfor %}
+
+                var baseLayers = {
+                    {% for base_layer in base_layers %}
+                    "{{ base_layer }}": {{ base_layer }},
+                    {% endfor %}
+                };
+
+                // We set the first base layer as the initial one
+                map.addLayer({{ base_layers.0 }});
+
+                var overlays = {
+                    "edited_layer": edited_layer,
+                };
+
+                var control = L.control.activeLayers(baseLayers,
+                                                     overlays,
+                                                     {collapsed: false}
+                                                    );
+                control.addTo(map);
+                L.control.scale().addTo(map);
+            {% endif %}
+
         });
 
     </script>
