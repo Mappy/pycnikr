@@ -105,22 +105,30 @@ STATIC_URL = '/static/'
 
 # Zoom used when displaying the map
 PYCNIKR_DEFAULT_ZOOM = 5
+
 # Coordinates of the center of the map when displaying the map
 PYCNIKR_DEFAULT_CENTER_LAT = 48.8534100
 PYCNIKR_DEFAULT_CENTER_LON = 2.3488000
+
 # The key is the style sheet name used in the URL
-# The first element of the value is the source file of the Python style sheet
-# The second element of the value is the destination file of the XML style sheet
+# - The first element of the value is the source file of the Python style sheet
+# - The second element of the value is the destination file of the XML style sheet
+#   Caution: only the file is created, not the intermediate directories
+# - The third element is interpreted as following:
+#   - If it [], the style sheet is a base layer
+#   - It is not [], the style sheet is an overlay, and the user can select the
+#     base layer in the list, the first one being selected by default
 PYCNIKR_STYLE_SHEETS_MAPPING = \
     {'example':
          (os.path.join(BASE_DIR, 'pycnikr', 'style_sheets', 'example.py'),
-          '/tmp/example.xml'
+          '/tmp/example.xml',
           ),
      'example2':
          (os.path.join(BASE_DIR, 'pycnikr', 'style_sheets', 'example2.py'),
-          '/tmp/example2.xml'
+          '/tmp/example2.xml',
           ),
      }
+
 # If PYCNIKR_TILE_SERVER_URL = {'left': 'left/',
 #                               'center': '/center/',
 #                               'right': '.png',
@@ -131,6 +139,7 @@ PYCNIKR_TILE_SERVER_URL = {'left': 'http://127.0.0.1:8081/',
                            'center': '/',
                            'right': '.png',
                            }
+
 # This callback is called when the user previews the map
 # This is the place to indicate to the tile server to refresh its style sheets
 PYCNIKR_PREVIEW_CALLBACK = lambda : None
