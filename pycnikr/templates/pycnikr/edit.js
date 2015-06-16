@@ -80,18 +80,22 @@ function handleError(xhr) {
     $(".alert").show();
 }
 
+function remove_layer(map, edited_layer, control) {
+    map.removeLayer(edited_layer);
+    control.removeLayer(edited_layer);
+}
+
 function buttonsSetup(editor, map, edited_layer, control) {
     $("#previewButton").click( function() {
         var url = "preview/{{ name }}";
         var body = editor.getValue();
         $.post(url, body).done(
             function() {
-                map.removeLayer(edited_layer);
-                control.removeLayer(edited_layer);
+                remove_layer(map, edited_layer, control);
                 edited_layer = display_edited_layer(map, edited_layer, control);
             }).fail(
                 function(xhr) {
-                    map.removeLayer(edited_layer);
+                    remove_layer(map, edited_layer, control);
                     handleError(xhr);
                 });
     });
