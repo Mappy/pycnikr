@@ -221,17 +221,29 @@
         }
 
         $(document).ready(function() {
-            ajaxSetup();
-            var editor = aceEditor();
-            var map = L.map('map').setView({{ center }}, {{ zoom }});
-            var hash = new L.Hash(map);
 
+            // Set up the Ajax requests
+            ajaxSetup();
+
+            // Initialize the text editor
+            var editor = aceEditor();
+
+            // Initialize the map
+            var map = L.map('map').setView({{ center }}, {{ zoom }});
+
+            // Display the edited layer
             var edited_layer = get_layer('{{ name }}');
             map.addLayer(edited_layer);
             $(".alert").hide();
 
-            buttonsSetup(editor, map, edited_layer);
+            // Display the zoom and the center in the address bar
+            var hash = new L.Hash(map);
 
+            // Display on the bottom left the distance scale
+            L.control.scale().addTo(map);
+
+            // Display on the upper right the selector of the base layers if
+            // the edited layer is an overlay
             {% if base_layers %}
                 {% for base_layer in base_layers %}
                 var {{ base_layer }} = get_layer('{{ base_layer }}');
@@ -255,9 +267,10 @@
                                                      {collapsed: false}
                                                     );
                 control.addTo(map);
-                L.control.scale().addTo(map);
             {% endif %}
 
+            // Set the behavior of the buttons
+            buttonsSetup(editor, map, edited_layer);
         });
 
     </script>
