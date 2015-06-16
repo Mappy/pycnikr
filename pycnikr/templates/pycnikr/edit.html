@@ -196,9 +196,7 @@
                 $.post(url, body).done(
                     function() {
                         map.removeLayer(edited_layer);
-                        edited_layer = get_layer('{{ name }}');
-                        map.addLayer(edited_layer);
-                        $(".alert").hide();
+                        edited_layer = display_edited_layer(map, edited_layer);
                     }).fail(
                     function(xhr) {
                         map.removeLayer(edited_layer);
@@ -220,6 +218,13 @@
             });
         }
 
+        function display_edited_layer(map, edited_layer) {
+            edited_layer = get_layer('{{ name }}');
+            map.addLayer(edited_layer);
+            $(".alert").hide();
+            return edited_layer;
+        }
+
         $(document).ready(function() {
 
             // Set up the Ajax requests
@@ -232,9 +237,8 @@
             var map = L.map('map').setView({{ center }}, {{ zoom }});
 
             // Display the edited layer
-            var edited_layer = get_layer('{{ name }}');
-            map.addLayer(edited_layer);
-            $(".alert").hide();
+            var edited_layer;
+            edited_layer = display_edited_layer(map, edited_layer);
 
             // Display the zoom and the center in the address bar
             var hash = new L.Hash(map);
