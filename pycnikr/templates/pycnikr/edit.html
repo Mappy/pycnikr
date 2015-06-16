@@ -126,14 +126,14 @@
                             });
 
         function get_layer(name) {
-            var items = ['{{ tile_server_url.left }}',
+            var items = ["{{ tile_server_url.left }}",
                          name,
-                         '{{ tile_server_url.center }}',
-                         '{z}/{x}/{y}',
-                         '{{ tile_server_url.right}}',
-                         '?refresh={random}',
+                         "{{ tile_server_url.center }}",
+                         "{z}/{x}/{y}",
+                         "{{ tile_server_url.right}}",
+                         "?refresh={random}",
                         ]
-            var url = items.join('')
+            var url = items.join("")
             return new random_layer(url);
         }
 
@@ -162,7 +162,7 @@
         function ajaxSetup() {
             $.ajaxSetup({
                 beforeSend: function(xhr, settings) {
-                    var csrftoken = getCookie('csrftoken');
+                    var csrftoken = getCookie("csrftoken");
                     if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
                         xhr.setRequestHeader("X-CSRFToken", csrftoken);
                     }
@@ -219,7 +219,7 @@
         }
 
         function display_edited_layer(map, edited_layer) {
-            edited_layer = get_layer('{{ name }}');
+            edited_layer = get_layer("{{ name }}");
             map.addLayer(edited_layer);
             $(".alert").hide();
             return edited_layer;
@@ -234,7 +234,7 @@
             var editor = aceEditor();
 
             // Initialize the map
-            var map = L.map('map').setView({{ center }}, {{ zoom }});
+            var map = L.map("map").setView({{ center }}, {{ zoom }});
 
             // Display the edited layer
             var edited_layer;
@@ -250,7 +250,7 @@
             // the edited layer is an overlay
             {% if base_layers %}
                 {% for base_layer in base_layers %}
-                var {{ base_layer }} = get_layer('{{ base_layer }}');
+                var {{ base_layer }} = get_layer("{{ base_layer }}");
                 {% endfor %}
 
                 var baseLayers = {
