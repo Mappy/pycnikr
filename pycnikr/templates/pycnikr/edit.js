@@ -154,12 +154,7 @@ $(document).ready(function() {
     // We set the first base layer as the initial one
     map.addLayer({{ base_layers.0 }});
 
-    var overlays = new Object();
-
-    control = L.control.activeLayers(baseLayers,
-                                     overlays,
-                                     {collapsed: false}
-                                    );
+    control = L.control.activeLayers(baseLayers, {}, {collapsed: false});
     control.addTo(map);
     {% endif %}
 
