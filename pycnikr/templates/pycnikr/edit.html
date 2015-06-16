@@ -126,8 +126,14 @@
                             });
 
         function get_layer(name) {
-            var url = '{{ tile_server_url.left }}' + name + '{{ tile_server_url.center }}{z}/{x}/{y}{{ tile_server_url.right}}';
-            url = url + '?refresh={random}';
+            var items = ['{{ tile_server_url.left }}',
+                         name,
+                         '{{ tile_server_url.center }}',
+                         '{z}/{x}/{y}',
+                         '{{ tile_server_url.right}}',
+                         '?refresh={random}',
+                        ]
+            var url = items.join('')
             return new random_layer(url);
         }
 
