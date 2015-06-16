@@ -73,7 +73,8 @@ function handleError(xhr) {
         errorDetail = "SERVER UNREACHABLE";
     }
     else {
-        errorDetail = /[\s\S]*(Traceback:[\s\S]*)Request information/.exec(xhr.responseText)[1];
+        var pattern = /[\s\S]*(Traceback:[\s\S]*)Request information/;
+        errorDetail = pattern.exec(xhr.responseText)[1];
     }
     $("#errorDetail").text(errorDetail);
     $(".alert").show();
