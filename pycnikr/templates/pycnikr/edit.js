@@ -79,14 +79,15 @@ function handleError(xhr) {
     $(".alert").show();
 }
 
-function buttonsSetup(editor, map, edited_layer) {
+function buttonsSetup(editor, map, edited_layer, control) {
     $("#previewButton").click( function() {
         var url = "preview/{{ name }}";
         var body = editor.getValue();
         $.post(url, body).done(
             function() {
                 map.removeLayer(edited_layer);
-                edited_layer = display_edited_layer(map, edited_layer);
+                control.removeLayer(edited_layer);
+                edited_layer = display_edited_layer(map, edited_layer, control);
             }).fail(
                 function(xhr) {
                     map.removeLayer(edited_layer);
@@ -108,8 +109,11 @@ function buttonsSetup(editor, map, edited_layer) {
     });
 }
 
-function display_edited_layer(map, edited_layer) {
+function display_edited_layer(map, edited_layer, control) {
     edited_layer = get_layer("{{ name }}");
+    if (control != null) {
+        control.addOverlay(edited_layer);
+    }
     map.addLayer(edited_layer);
     $(".alert").hide();
     return edited_layer;
@@ -126,10 +130,6 @@ $(document).ready(function() {
     // Initialize the map
     var map = L.map("map").setView({{ center }}, {{ zoom }});
 
-    // Display the edited layer
-    var edited_layer;
-    edited_layer = display_edited_layer(map, edited_layer);
-
     // Display the zoom and the center in the address bar
     var hash = new L.Hash(map);
 
@@ -138,6 +138,7 @@ $(document).ready(function() {
 
     // Display on the upper right the selector of the base layers if
     // the edited layer is an overlay
+    var control;
     {% if base_layers %}
     {% for base_layer in base_layers %}
     var {{ base_layer }} = get_layer("{{ base_layer }}");
@@ -152,15 +153,21 @@ $(document).ready(function() {
     // We set the first base layer as the initial one
     map.addLayer({{ base_layers.0 }});
 
-    var overlays = {"edited_layer": edited_layer};
-    var control = L.control.activeLayers(baseLayers,
-                                         overlays,
-                                         {collapsed: false}
-                                        );
+    var overlays = new Object();
+
+    control = L.control.activeLayers(baseLayers,
+                                     overlays,
+                                     {collapsed: false}
+                                    );
     control.addTo(map);
     {% endif %}
 
+    // Display the edited layer
+    var edited_layer;
+    edited_layer = display_edited_layer(map, edited_layer, control);
+
     // Set the behavior of the buttons
-    buttonsSetup(editor, map, edited_layer);
+    buttonsSetup(editor, map, edited_layer, control);
+
 });
 
