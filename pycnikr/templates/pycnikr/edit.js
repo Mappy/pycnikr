@@ -80,6 +80,16 @@ function handleError(xhr) {
     $(".alert").show();
 }
 
+function add_layer(map, control) {
+    var edited_layer = get_layer("{{ name }}");
+    if (control != null) {
+        control.addOverlay(edited_layer);
+    }
+    map.addLayer(edited_layer);
+    $(".alert").hide();
+    return edited_layer;
+}
+
 function remove_layer(map, edited_layer, control) {
     map.removeLayer(edited_layer);
     control.removeLayer(edited_layer);
@@ -92,7 +102,7 @@ function buttonsSetup(editor, map, edited_layer, control) {
         $.post(url, body).done(
             function() {
                 remove_layer(map, edited_layer, control);
-                edited_layer = display_edited_layer(map, edited_layer, control);
+                edited_layer = add_layer(map, control);
             }).fail(
                 function(xhr) {
                     remove_layer(map, edited_layer, control);
@@ -112,16 +122,6 @@ function buttonsSetup(editor, map, edited_layer, control) {
     $("#reloadButton").click( function() {
         window.location.reload();
     });
-}
-
-function display_edited_layer(map, edited_layer, control) {
-    edited_layer = get_layer("{{ name }}");
-    if (control != null) {
-        control.addOverlay(edited_layer);
-    }
-    map.addLayer(edited_layer);
-    $(".alert").hide();
-    return edited_layer;
 }
 
 $(document).ready(function() {
@@ -163,8 +163,7 @@ $(document).ready(function() {
     {% endif %}
 
     // Display the edited layer
-    var edited_layer;
-    edited_layer = display_edited_layer(map, edited_layer, control);
+    var edited_layer = add_layer(map, control);
 
     // Set the behavior of the buttons
     buttonsSetup(editor, map, edited_layer, control);
