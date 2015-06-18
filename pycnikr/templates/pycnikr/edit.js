@@ -129,6 +129,41 @@ function buttonsSetup(editor, map, control) {
     $("#reloadButton").click( function() {
         window.location.reload();
     });
+
+    function show(item, size) {
+        var classes;
+        var parent = $(item).parent();
+        classes = parent.attr("class").split(" ");
+        $.each(classes, function (index, item) {
+            parent.removeClass(item)
+        });
+        parent.addClass("col-xs-" + size);
+        parent.addClass("col-md-" + size);
+        parent.show();
+    }
+
+    function hide(item) {
+        $(item).parent().hide();
+    }
+
+    $("#show li a").click( function() {
+        var content = $(this).text();
+        if (content == "Code and map") {
+            show("#map", 6);
+            show("#editor", 6);
+        }
+        else if (content == "Code only") {
+            show("#editor", 12);
+            hide("#map");
+        }
+        else if (content == "Map only") {
+            hide("#editor");
+            show("#map", 12);
+        }
+        else {
+            alert('Invalid content (' + content + ')');
+        }
+    })
 }
 
 $(document).ready(function() {
