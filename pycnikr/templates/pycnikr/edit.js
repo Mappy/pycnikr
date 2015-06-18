@@ -91,13 +91,18 @@ function add_layer(map, control) {
 }
 
 function remove_layer(map, edited_layer, control) {
-    map.removeLayer(edited_layer);
-    if (control != null) {
+    if (edited_layer != null) {
+        map.removeLayer(edited_layer);
+    }
+    if (edited_layer != null && control != null) {
         control.removeLayer(edited_layer);
     }
 }
 
-function buttonsSetup(editor, map, edited_layer, control) {
+function buttonsSetup(editor, map, control) {
+
+    var edited_layer;
+
     $("#previewButton").click( function() {
         var url = "preview/{{ name }}";
         var body = editor.getValue();
@@ -164,11 +169,10 @@ $(document).ready(function() {
     control.addTo(map);
     {% endif %}
 
-    // Display the edited layer
-    var edited_layer = add_layer(map, control);
-
     // Set the behavior of the buttons
-    buttonsSetup(editor, map, edited_layer, control);
+    buttonsSetup(editor, map, control);
 
+    // Click on Preview
+    $("#previewButton").trigger("click");
 });
 
