@@ -92,7 +92,9 @@ function add_layer(map, control) {
 
 function remove_layer(map, edited_layer, control) {
     map.removeLayer(edited_layer);
-    control.removeLayer(edited_layer);
+    if (control != null) {
+        control.removeLayer(edited_layer);
+    }
 }
 
 function buttonsSetup(editor, map, edited_layer, control) {
