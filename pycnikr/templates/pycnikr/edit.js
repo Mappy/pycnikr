@@ -103,7 +103,32 @@ function buttonsSetup(editor, map, control) {
 
     var edited_layer;
 
+    var content;
+
+    if (sessionStorage['pycnikr_show'] == null) {
+        sessionStorage['pycnikr_show'] = "Code and map";
+    }
+
     $("#previewButton").click( function() {
+
+        var pycnikr_show = sessionStorage['pycnikr_show'];
+        if (pycnikr_show == "Code and map") {
+            show("#map", 6);
+            show("#editor", 6);
+        }
+        else if (pycnikr_show == "Code only") {
+            show("#editor", 12);
+            hide("#map");
+        }
+        else if (pycnikr_show == "Map only") {
+            hide("#editor");
+            show("#map", 12);
+        }
+        else {
+            alert('Invalid value for pycnikr_show (' + pycnikr_show + ')');
+        }
+        $("#showButton").text(pycnikr_show)
+
         var url = "preview/{{ name }}";
         var body = editor.getValue();
         $.post(url, body).done(
@@ -147,22 +172,8 @@ function buttonsSetup(editor, map, control) {
     }
 
     $("#show li a").click( function() {
-        var content = $(this).text();
-        if (content == "Code and map") {
-            show("#map", 6);
-            show("#editor", 6);
-        }
-        else if (content == "Code only") {
-            show("#editor", 12);
-            hide("#map");
-        }
-        else if (content == "Map only") {
-            hide("#editor");
-            show("#map", 12);
-        }
-        else {
-            alert('Invalid content (' + content + ')');
-        }
+        sessionStorage['pycnikr_show'] = $(this).text();
+        $("#previewButton").trigger("click");
     })
 }
 
