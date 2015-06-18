@@ -67,6 +67,45 @@ function aceEditor() {
     return editor;
 }
 
+function show(item, size) {
+    var classes;
+    var parent = $(item).parent();
+    classes = parent.attr("class").split(" ");
+    $.each(classes, function(index, item) {
+        parent.removeClass(item)
+    });
+    parent.addClass("col-xs-" + size);
+    parent.addClass("col-md-" + size);
+    parent.show();
+}
+
+function hide(item) {
+    $(item).parent().hide();
+}
+
+function show_editor_map() {
+    if (sessionStorage["pycnikr_show"] == null) {
+        sessionStorage["pycnikr_show"] = "Code and map";
+    }
+    var pycnikr_show = sessionStorage["pycnikr_show"];
+    if (pycnikr_show == "Code and map") {
+        show("#editor", 6);
+        show("#map", 6);
+    }
+    else if (pycnikr_show == "Code only") {
+        show("#editor", 12);
+        hide("#map");
+    }
+    else if (pycnikr_show == "Map only") {
+        hide("#editor");
+        show("#map", 12);
+    }
+    else {
+        alert("Invalid value for pycnikr_show (" + pycnikr_show + ")");
+    }
+    $("#show").text(pycnikr_show);
+}
+
 function handleError(xhr) {
     var errorDetail;
     if (!xhr.readyState) {
@@ -86,7 +125,6 @@ function add_layer(map, control) {
         control.addOverlay(edited_layer);
     }
     map.addLayer(edited_layer);
-    $(".alert").hide();
     return edited_layer;
 }
 
@@ -99,42 +137,27 @@ function remove_layer(map, edited_layer, control) {
     }
 }
 
-function buttonsSetup(editor, map, control) {
+function userEventsSetup(editor) {
 
     var edited_layer;
+    var map;
+    var control;
 
-    var content;
-
-    if (sessionStorage['pycnikr_show'] == null) {
-        sessionStorage['pycnikr_show'] = "Code and map";
-    }
-
-    $("#previewButton").click( function() {
-
-        var pycnikr_show = sessionStorage['pycnikr_show'];
-        if (pycnikr_show == "Code and map") {
-            show("#map", 6);
-            show("#editor", 6);
+    $("#preview").click( function() {
+        if (map == null) {
+            // For an obscure reason, the map must be instanciated here and not
+            // in the main function. Otherwise, the map is not resized when
+            // the user chooses to display only the map.
+            map = build_map();
+            control = build_control(map);
         }
-        else if (pycnikr_show == "Code only") {
-            show("#editor", 12);
-            hide("#map");
-        }
-        else if (pycnikr_show == "Map only") {
-            hide("#editor");
-            show("#map", 12);
-        }
-        else {
-            alert('Invalid value for pycnikr_show (' + pycnikr_show + ')');
-        }
-        $("#showButton").text(pycnikr_show)
-
         var url = "preview/{{ name }}";
         var body = editor.getValue();
         $.post(url, body).done(
             function() {
                 remove_layer(map, edited_layer, control);
                 edited_layer = add_layer(map, control);
+                $(".alert").hide();
             }).fail(
                 function(xhr) {
                     remove_layer(map, edited_layer, control);
@@ -142,7 +165,7 @@ function buttonsSetup(editor, map, control) {
                 });
     });
 
-    $("#saveButton").click( function() {
+    $("#save").click( function() {
         var url = "save/{{ name }}";
         var body = editor.getValue();
         $.post(url, body).done(
@@ -151,49 +174,27 @@ function buttonsSetup(editor, map, control) {
             }).fail(handleError);
     });
 
-    $("#reloadButton").click( function() {
+    $("#reload").click( function() {
         window.location.reload();
     });
 
-    function show(item, size) {
-        var classes;
-        var parent = $(item).parent();
-        classes = parent.attr("class").split(" ");
-        $.each(classes, function (index, item) {
-            parent.removeClass(item)
-        });
-        parent.addClass("col-xs-" + size);
-        parent.addClass("col-md-" + size);
-        parent.show();
-    }
-
-    function hide(item) {
-        $(item).parent().hide();
-    }
-
     $("#show li a").click( function() {
-        sessionStorage['pycnikr_show'] = $(this).text();
-        $("#previewButton").trigger("click");
+        sessionStorage["pycnikr_show"] = $(this).text();
+        $("#reload").trigger("click");
     })
 }
 
-$(document).ready(function() {
-
-    // Set up the Ajax requests
-    ajaxSetup();
-
-    // Initialize the text editor
-    var editor = aceEditor();
-
+function build_map() {
     // Initialize the map
     var map = L.map("map").setView({{ center }}, {{ zoom }});
-
     // Display the zoom and the center in the address bar
     var hash = new L.Hash(map);
-
     // Display on the bottom left the distance scale
     L.control.scale().addTo(map);
+    return map;
+}
 
+function build_control(map) {
     // Display on the upper right the selector of the base layers if
     // the edited layer is an overlay
     var control;
@@ -201,24 +202,30 @@ $(document).ready(function() {
     {% for base_layer in base_layers %}
     var {{ base_layer }} = get_layer("{{ base_layer }}");
     {% endfor %}
-
     var baseLayers = {
         {% for base_layer in base_layers %}
         "{{ base_layer }}": {{ base_layer }},
         {% endfor %}
     };
-
     // We set the first base layer as the initial one
     map.addLayer({{ base_layers.0 }});
-
     control = L.control.activeLayers(baseLayers, {}, {collapsed: false});
     control.addTo(map);
     {% endif %}
+    return control;
+}
 
-    // Set the behavior of the buttons
-    buttonsSetup(editor, map, control);
-
-    // Click on Preview
-    $("#previewButton").trigger("click");
+$(document).ready(function() {
+    // Do not display the alerts
+    $(".alert").hide();
+    // Set up the Ajax requests
+    ajaxSetup();
+    // Displays the content specified by the user
+    show_editor_map();
+    // Initialize the text editor
+    var editor = aceEditor();
+    // Set the response to the events triggered by the user
+    userEventsSetup(editor);
+    // Click on the button Preview
+    $("#preview").trigger("click");
 });
-
