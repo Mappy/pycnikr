@@ -201,6 +201,9 @@ function build_control(map) {
     map.addLayer({{ base_layers.0 }});
     control = L.control.activeLayers(baseLayers, {}, {collapsed: false});
     control.addTo(map);
+    {% if not several_base_layers %}
+    $(".leaflet-control-layers").hide();
+    {% endif %}
     {% endif %}
     return control;
 }

@@ -33,6 +33,7 @@ def edit(request, name):
     return render(
         request, 'pycnikr/edit.html',
         {
+            'several_base_layers': len(get_base_layers(name)) > 1,
             'base_layers': get_base_layers(name),
             'tile_server_url': settings.PYCNIKR_TILE_SERVER_URL,
             'style_sheets': py_style_sheets,
