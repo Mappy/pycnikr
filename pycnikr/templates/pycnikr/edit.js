@@ -68,9 +68,8 @@ function aceEditor() {
 }
 
 function show(item, size) {
-    var classes;
     var parent = $(item).parent();
-    classes = parent.attr("class").split(" ");
+    var classes = parent.attr("class").split(" ");
     $.each(classes, function(index, item) {
         parent.removeClass(item)
     });
@@ -137,20 +136,11 @@ function remove_layer(map, edited_layer, control) {
     }
 }
 
-function userEventsSetup(editor) {
+function userEventsSetup(editor, map, control) {
 
     var edited_layer;
-    var map;
-    var control;
 
     $("#preview").click( function() {
-        if (map == null) {
-            // For an obscure reason, the map must be instanciated here and not
-            // in the main function. Otherwise, the map is not resized when
-            // the user chooses to display only the map.
-            map = build_map();
-            control = build_control(map);
-        }
         var url = "preview/{{ name }}";
         var body = editor.getValue();
         $.post(url, body).done(
@@ -222,10 +212,14 @@ $(document).ready(function() {
     ajaxSetup();
     // Displays the content specified by the user
     show_editor_map();
-    // Initialize the text editor
+    // Build the text editor
     var editor = aceEditor();
+    // Build the map
+    var map = build_map();
+    // Build the control of the layers
+    var control = build_control(map);
     // Set the response to the events triggered by the user
-    userEventsSetup(editor);
+    userEventsSetup(editor, map, control);
     // Click on the button Preview
     $("#preview").trigger("click");
 });
