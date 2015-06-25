@@ -161,6 +161,7 @@ function userEventsSetup(editor, map, control) {
         $.post(url, body).done(
             function(result) {
                 $(".alert").hide()
+                console.log("Style sheet successfully saved on the server");
             }).fail(handleError);
     });
 
@@ -208,6 +209,33 @@ function build_control(map) {
     return control;
 }
 
+function keyboardShortcutsSetup(editor) {
+    editor.commands.addCommand({
+        name: 'save',
+        bindKey: {win: 'Ctrl-S'},
+        exec: function(editor) {
+            $("#save").trigger("click");
+        },
+        readOnly: false,
+    });
+    editor.commands.addCommand({
+        name: 'preview',
+        bindKey: {win: 'Ctrl-P'},
+        exec: function(editor) {
+            $("#preview").trigger("click");
+        },
+        readOnly: false,
+    });
+    editor.commands.addCommand({
+        name: 'reload',
+        bindKey: {win: 'Ctrl-R'},
+        exec: function(editor) {
+            $("#reload").trigger("click");
+        },
+        readOnly: false,
+    });
+}
+
 $(document).ready(function() {
     // Do not display the alerts
     $(".alert").hide();
@@ -217,6 +245,8 @@ $(document).ready(function() {
     show_editor_map();
     // Build the text editor
     var editor = aceEditor();
+    // Set up the keyboard shortcuts
+    keyboardShortcutsSetup(editor);
     // Build the map
     var map = build_map();
     // Build the control of the layers

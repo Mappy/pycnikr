@@ -48,6 +48,9 @@
         .ace_search_field {
            color: black;
         }
+        .first_letter {
+           text-decoration: underline;
+        }
     </style>
     <!-- jQuery JS  -->
     <script src="https://code.jquery.com/jquery-2.1.4.js"></script>
@@ -83,10 +86,11 @@
                 </ul>
               </div>
 
-              <a id="reload" title="Reload the style sheet from the server in its original state" class="btn btn-info btn-lg">RELOAD</a>
+              <a id="reload" title="[Ctrl-R] Reload the style sheet from the server in its original state"
+                 class="btn btn-info btn-lg"><span class="first_letter">R</span>ELOAD</a>
 
-              <a id="save" title="Save the modifications of the style sheet on the server" class="btn btn-info btn-lg">SAVE</a>
-
+              <a id="save" title="[Ctrl-S] Save the modifications of the style sheet on the server"
+                 class="btn btn-info btn-lg"><span class="first_letter">S</span>AVE</a>
               <div class="btn-group">
                 <button id="show" type="button" title="Content shown on the window" class="selection btn btn-info btn-lg">Code and map</button>
                 <button type="button" title="Select the content to show on the window" class="btn btn-info btn-lg dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -100,7 +104,8 @@
                 </ul>
               </div>
 
-              <a id="preview" title="Generate map with the style sheet as it is in the editor" class="btn btn-info btn-lg">PREVIEW</a>
+              <a id="preview" title="[Ctrl-P] Generate map with the style sheet as it is in the editor"
+                 class="btn btn-info btn-lg"><span class="first_letter">P</span>REVIEW</a>
 
             </div>
         </div>
